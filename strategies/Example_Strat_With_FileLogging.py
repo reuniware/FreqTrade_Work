@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 LOG_FILENAME = datetime.now().strftime('logfile_%d_%m_%Y.log')
 os.system("rm " + LOG_FILENAME)
 
+# This will have an impact on all the logging from FreqTrade, when using other strategies that this one !!! 
 for handler in logging.root.handlers[:]:
     logging.root.removeHandler(handler)
 logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG, format='%(asctime)s :: %(message)s')
