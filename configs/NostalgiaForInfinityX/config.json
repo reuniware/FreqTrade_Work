@@ -44,7 +44,7 @@
       "name":"kucoin",
       "key":"replace me",
       "secret":"replace me",
-	  "password": "replace ma",
+	  "password": "replace me",
       "ccxt_config":{
          "enableRateLimit":true,
 	 "rateLimit":200
