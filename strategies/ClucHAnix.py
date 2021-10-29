@@ -21,8 +21,8 @@ def ha_typical_price(bars):
 class ClucHAnix(IStrategy):
 
     """
-    PASTE OUTPUT FROM HYPEROPT HERE
-    Can be overridden for specific sub-strategies (stake currencies) at the bottom.
+    VERSION MODIFIED BY REUNIWARE (InvestDataSystems@Yahoo.Com / 2021)
+    THIS VERSION CONTAINS HYPEROPT SETTINGS FROM E0V1E (cf. https://discord.gg/Ayvcvs6N )
     """
     class HyperOpt:
         @staticmethod
