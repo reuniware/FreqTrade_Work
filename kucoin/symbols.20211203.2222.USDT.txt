@@ -1,5 +1,6 @@
 # These are all USDT pairs available in spot trading on Kucoin on 12/03/2021 22:24
 # To be copied in a config.json file to be used with FreqTrade, eg. in the "pair_whitelist" section.
+# Are excluded pairs with "3L" and "3S".
 
 "1EARTH/USDT",
 "1INCH/USDT",
