@@ -1,3 +1,8 @@
+# These are all BTC/ETH/USDT pairs available in spot trading on Kucoin on 12/03/2021 22:24
+# To be copied in a config.json file to be used with FreqTrade, eg. in the "pair_whitelist" section.
+# Are excluded pairs with "3L" and "3S".
+# You will have to filter out only one relative pair (all USDT ones or all BTC ones or all ETH ones) because I think that FreqTrade cannot use more than one stake_currency
+
 "1EARTH/USDT",
 "1INCH/USDT",
 "2CRZ/BTC",
