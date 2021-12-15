@@ -1,3 +1,5 @@
+# Excluded : *BEAR/USD and *BULL/USD
+
 "1INCH/USD",
 "AAPL/USD",
 "AAVE/USD",
