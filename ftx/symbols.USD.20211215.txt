@@ -1,4 +1,4 @@
-# Excluded : *BEAR/USD and *BULL/USD
+# Excluded : *BEAR*/USD and *BULL/USD *HALF/USD *HEDGE/USD *SHIT/USD *VOL/USD 
 
 "1INCH/USD",
 "AAPL/USD",
