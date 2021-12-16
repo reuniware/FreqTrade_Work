@@ -1,0 +1,38 @@
+https://github.com/mrjbq7/ta-lib/issues/459
+https://www.lfd.uci.edu/~gohlke/pythonlibs/#ta-lib
+D:\freqtrade-stable>pip install TA_Lib-0.4.21-cp37-cp37m-win_amd64.whl
+Processing d:\freqtrade-stable\ta_lib-0.4.21-cp37-cp37m-win_amd64.whl
+Installing collected packages: TA-Lib
+Successfully installed TA-Lib-0.4.21
+
+
+D:\freqtrade-stable>freqtrade backtesting --strategy SampleStrategy --starting-balance 100
+D:\freqtrade-stable>freqtrade download-data --days 90 --exchange binance
+
+
+Linux (Ubuntu/Amazon Linux):
+user001@MaMachineLinux:~/freqtrade/user_data$ source .env/bin/activate
+
+
+freqtrade trade --strategy EMAPriceCrossoverWithThreshold --starting-balance 320
+freqtrade show-trades --db-url sqlite:///./tradesv3.sqlite
+
+
+freqtrade backtesting --strategy EMAPriceCrossoverWithThreshold --starting-balance 2000 --timerange=20210801-20210914
+freqtrade plot-dataframe --strategy EMAPriceCrossoverWithThreshold --timerange=20210801-20210914
+freqtrade plot-profit --strategy EMAPriceCrossoverWithThreshold --timerange=20210801-20210914
+freqtrade backtesting --strategy EMAPriceCrossoverWithThreshold --starting-balance 2000 --timerange=20210801-20210916 -c config-binance.json
+freqtrade backtesting --strategy NostalgiaForInfinityX --starting-balance 2000 --timerange=20210801-20210916 -c config-static-2.json
+
+freqtrade list-exchanges--
+
+
+freqtrade download-data --days 730 --exchange huobi
+freqtrade download-data -c config-binance.json --days 730
+freqtrade download-data --days 365 --timeframe 1h
+freqtrade download-data --days 15 -c config-static-2.json -t 1h
+freqtrade download-data --days 15 -c config-static-2.json -t 1d
+freqtrade download-data --days 15 -c config-static-2.json -t 15m
+freqtrade download-data --days 365 -c config-static-2.json -t 1d -t 1h -t 15m -t 5m
+freqtrade download-data --days 31 -c config-static-2-ftx.json -p BTC/USDT -t 1h
+freqtrade download-data --days 31 -c config-static-2-ftx.json -p BTC/USDT -t 1d
