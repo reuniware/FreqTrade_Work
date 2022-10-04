@@ -16,24 +16,8 @@ import freqtrade.vendor.qtpylib.indicators as qtpylib
 import ta as taichi
 
 
-# This class is a sample. Feel free to customize it.
+# This class is a sample. Feel free to customize it. DO NOT USE THIS FOR REAL TRADING. YOU WILL LOSE MONEY FOR SURE.
 class SampleStrategy(IStrategy):
-    """
-    This is a sample strategy to inspire you.
-    More information in https://www.freqtrade.io/en/latest/strategy-customization/
-
-    You can:
-        :return: a Dataframe with all mandatory indicators for the strategies
-    - Rename the class name (Do not forget to update class_name)
-    - Add any methods you want to build your strategy
-    - Add any lib you need to build your strategy
-
-    You must keep:
-    - the lib in the section "Do not remove these libs"
-    - the methods: populate_indicators, populate_entry_trend, populate_exit_trend
-    You should keep:
-    - timeframe, minimal_roi, stoploss, trailing_*
-    """
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
     INTERFACE_VERSION = 3
@@ -56,11 +40,11 @@ class SampleStrategy(IStrategy):
     # Trailing stoploss
     trailing_stop = False
     # trailing_only_offset_is_reached = False
-    # trailing_stop_positive = 0.01
+    trailing_stop_positive = 0.01
     # trailing_stop_positive_offset = 0.0  # Disabled / not configured
 
     # Optimal timeframe for the strategy.
-    timeframe = '5m'
+    timeframe = '15m'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = True
@@ -71,10 +55,10 @@ class SampleStrategy(IStrategy):
     ignore_roi_if_entry_signal = False
 
     # Hyperoptable parameters
-    buy_rsi = IntParameter(low=1, high=50, default=30, space='buy', optimize=True, load=True)
-    sell_rsi = IntParameter(low=50, high=100, default=70, space='sell', optimize=True, load=True)
-    short_rsi = IntParameter(low=51, high=100, default=70, space='sell', optimize=True, load=True)
-    exit_short_rsi = IntParameter(low=1, high=50, default=30, space='buy', optimize=True, load=True)
+    #buy_rsi = IntParameter(low=1, high=50, default=30, space='buy', optimize=True, load=True)
+    #sell_rsi = IntParameter(low=50, high=100, default=70, space='sell', optimize=True, load=True)
+    #short_rsi = IntParameter(low=51, high=100, default=70, space='sell', optimize=True, load=True)
+    #exit_short_rsi = IntParameter(low=1, high=50, default=30, space='buy', optimize=True, load=True)
 
     # Number of candles the strategy requires before producing valid signals
     startup_candle_count: int = 52+26
@@ -127,42 +111,46 @@ class SampleStrategy(IStrategy):
         # print(dataframe['ICH_CS'])
 
         # RSI
-        dataframe['rsi'] = ta.RSI(dataframe)
+        #dataframe['rsi'] = ta.RSI(dataframe)
 
         return dataframe
 
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
         dataframe.loc[
-            (
-                (qtpylib.crossed_above(dataframe['ICH_TS'], dataframe['ICH_KS']))
+            (   
+                (dataframe['ICH_CS'] > dataframe['high'])
+                & (dataframe['ICH_CS'] > dataframe['ICH_KS'])
+                & (dataframe['ICH_CS'] > dataframe['ICH_TS'])
+                & (dataframe['ICH_CS'] > dataframe['ICH_SSA'])
+                & (dataframe['ICH_CS'] > dataframe['ICH_SSB'])
             ),
             'enter_long'] = 1
 
-        dataframe.loc[
-            (
-                (qtpylib.crossed_above(dataframe['ICH_KS'], dataframe['ICH_TS']))
-            ),
-            'enter_short'] = 1
+        #dataframe.loc[
+            #(
+            #    (qtpylib.crossed_above(dataframe['ICH_KS'], dataframe['ICH_TS']))
+            #),
+            #'enter_short'] = 1
 
         return dataframe
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        dataframe.loc[
-            (
+        #dataframe.loc[
+        #    (
+        #        # Signal: RSI crosses above 70
+        #        (qtpylib.crossed_below(dataframe['close'], dataframe['ICH_KS']))
+        #    ),
+
+        #    'exit_long'] = 1
+
+        #dataframe.loc[
+        #    (
                 # Signal: RSI crosses above 70
-                (qtpylib.crossed_above(dataframe['ICH_KS'], dataframe['ICH_TS']))
-            ),
+        #        (qtpylib.crossed_above(dataframe['ICH_TS'], dataframe['ICH_KS']))
+        #    ),
 
-            'exit_long'] = 1
-
-        dataframe.loc[
-            (
-                # Signal: RSI crosses above 70
-                (qtpylib.crossed_above(dataframe['ICH_TS'], dataframe['ICH_KS']))
-            ),
-
-            'exit_short'] = 1
+        #    'exit_short'] = 1
 
 
         return dataframe
