@@ -1,1 +1,4 @@
 freqtrade download-data --days 90 --exchange gateio --config config-test.json
+
+freqtrade backtesting --config config-test.json --strategy SampleStrategy
+
