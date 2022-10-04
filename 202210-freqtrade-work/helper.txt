@@ -1,0 +1,1 @@
+freqtrade download-data --days 90 --exchange gateio --config config-test.json
