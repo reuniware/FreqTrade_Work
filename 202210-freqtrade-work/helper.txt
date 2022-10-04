@@ -2,3 +2,48 @@ freqtrade download-data --days 90 --exchange gateio --config config-test.json -t
 
 freqtrade backtesting --config config-test.json --strategy SampleStrategy
 
+MS Linux Ubuntu
+user001@11.22.33.44
+cd C:\Users\ICHIMOKUSCANNER\Downloads
+psftp -i C:\Users\Utilisateur1\Downloads\ClésPrivées\MaMachineLinux_key.ppk user001@11.22.33.44
+mget -r freqtrade // pour rappatrier tout le répertoire freqtrade en local
+
+AMAZON EC2 Tokyo Debian Linux
+psftp -i "C:\_DVA\Tools\Putty\ClésPrivées\FreqTrade_Tokyo.ppk" admin@11.22.33.44
+put C:\_ICHIMOKUTRADER\tmp\_CRYPT0\freqtrade-stable-configs\config-dynamic-2.json
+
+https://github.com/mrjbq7/ta-lib/issues/459
+https://www.lfd.uci.edu/~gohlke/pythonlibs/#ta-lib
+D:\freqtrade-stable>pip install TA_Lib-0.4.21-cp37-cp37m-win_amd64.whl
+Processing d:\freqtrade-stable\ta_lib-0.4.21-cp37-cp37m-win_amd64.whl
+Installing collected packages: TA-Lib
+Successfully installed TA-Lib-0.4.21
+
+D:\freqtrade-stable>freqtrade backtesting --strategy SampleStrategy --starting-balance 100
+D:\freqtrade-stable>freqtrade download-data --days 90 --exchange binance
+
+user001@MaMachineLinux:~/freqtrade/user_data$ source .env/bin/activate
+
+freqtrade trade --strategy EMAPriceCrossoverWithThreshold --starting-balance 320
+freqtrade show-trades --db-url sqlite:///./tradesv3.sqlite
+
+freqtrade backtesting --strategy EMAPriceCrossoverWithThreshold --starting-balance 2000 --timerange=20210801-20210914
+freqtrade plot-dataframe --strategy EMAPriceCrossoverWithThreshold --timerange=20210801-20210914
+freqtrade plot-profit --strategy EMAPriceCrossoverWithThreshold --timerange=20210801-20210914
+
+freqtrade backtesting --strategy EMAPriceCrossoverWithThreshold --starting-balance 2000 --timerange=20210801-20210916 -c config-binance.json
+
+freqtrade list-exchanges--
+freqtrade download-data --days 730 --exchange huobi
+freqtrade download-data -c config-binance.json --days 730
+freqtrade download-data --days 365 --timeframe 1h
+
+freqtrade download-data --days 15 -c config-static-2.json -t 1h
+freqtrade download-data --days 15 -c config-static-2.json -t 1d
+freqtrade download-data --days 15 -c config-static-2.json -t 15m
+freqtrade download-data --days 365 -c config-static-2.json -t 1d -t 1h -t 15m -t 5m
+
+28/09/2021
+freqtrade trade -c config-dynamic-2.json --strategy MultiMA_TSL
+freqtrade trade -c config-dynamic-2.json --strategy NostalgiaForInfinityNext
+
