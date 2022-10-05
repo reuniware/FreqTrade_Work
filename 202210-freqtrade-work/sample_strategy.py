@@ -5,6 +5,8 @@
 import numpy as np  # noqa
 import pandas as pd  # noqa
 from pandas import DataFrame
+import os
+from datetime import datetime
 
 from freqtrade.strategy import (BooleanParameter, CategoricalParameter, DecimalParameter,
                                 IStrategy, IntParameter)
@@ -15,9 +17,23 @@ import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 import ta as taichi
 
+pd.set_option('display.max_columns', 100)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.expand_frame_repr', True)
 
-# This class is a sample. Feel free to customize it. DO NOT USE THIS FOR REAL TRADING. YOU WILL LOSE MONEY FOR SURE.
+def delete_log_results():
+    if os.path.exists("mylogs.txt"):
+        os.remove("mylogs.txt")
+
+def log_to_results(str_to_log):
+    fr = open("mylogs.txt", "a")
+    fr.write(str(datetime.now()) + " : " + str_to_log + "\n")
+    fr.close()
+
+# This class is a sample. Feel free to customize it.
 class SampleStrategy(IStrategy):
+    delete_log_results()
+
     # Strategy interface version - allow new iterations of the strategy interface.
     # Check the documentation or the Sample strategy to get the latest version.
     INTERFACE_VERSION = 3
@@ -29,7 +45,7 @@ class SampleStrategy(IStrategy):
     # This attribute will be overridden if the config file contains "minimal_roi".
     minimal_roi = {
         "60": 0.01,
-        "30": 0.02,
+        "30": 0.01,
         "0": 0.04
     }
 
@@ -44,7 +60,7 @@ class SampleStrategy(IStrategy):
     # trailing_stop_positive_offset = 0.0  # Disabled / not configured
 
     # Optimal timeframe for the strategy.
-    timeframe = '1d'
+    timeframe = '15m'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = True
@@ -54,14 +70,8 @@ class SampleStrategy(IStrategy):
     exit_profit_only = False
     ignore_roi_if_entry_signal = False
 
-    # Hyperoptable parameters
-    #buy_rsi = IntParameter(low=1, high=50, default=30, space='buy', optimize=True, load=True)
-    #sell_rsi = IntParameter(low=50, high=100, default=70, space='sell', optimize=True, load=True)
-    #short_rsi = IntParameter(low=51, high=100, default=70, space='sell', optimize=True, load=True)
-    #exit_short_rsi = IntParameter(low=1, high=50, default=30, space='buy', optimize=True, load=True)
-
     # Number of candles the strategy requires before producing valid signals
-    startup_candle_count: int = 52+26
+    startup_candle_count: int = 26
 
     # Optional order type mapping.
     order_types = {
@@ -72,26 +82,10 @@ class SampleStrategy(IStrategy):
     }
 
     # Optional order time in force.
-    order_time_in_force = {
-        'entry': 'GTC',
-        'exit': 'GTC'
-    }
-
-    plot_config = {
-        'main_plot': {
-            'tema': {},
-            'sar': {'color': 'white'},
-        },
-        'subplots': {
-            "MACD": {
-                'macd': {'color': 'blue'},
-                'macdsignal': {'color': 'orange'},
-            },
-            "RSI": {
-                'rsi': {'color': 'red'},
-            }
-        }
-    }
+    # order_time_in_force = {
+    #    'entry': 'GTC',
+    #    'exit': 'GTC'
+    #}
 
     def informative_pairs(self):
         return []
@@ -102,13 +96,15 @@ class SampleStrategy(IStrategy):
 
         dataframe['ICH_SSB'] = taichi.trend.ichimoku_b(dataframe['high'], dataframe['low'], window2=26, window3=52).shift(26)
         dataframe['ICH_SSA'] = taichi.trend.ichimoku_a(dataframe['high'], dataframe['low'], window1=9, window2=26).shift(26)
-        # print(dataframe['ICH_SSA'])
+        #print(dataframe['ICH_SSA'])
         dataframe['ICH_KS'] = taichi.trend.ichimoku_base_line(dataframe['high'], dataframe['low'])
-        # print(dataframe['ICH_KS'])
+        #print(dataframe['ICH_KS'])
         dataframe['ICH_TS'] = taichi.trend.ichimoku_conversion_line(dataframe['high'], dataframe['low'])
-        # print(dataframe['ICH_TS'])
+        #print(dataframe['ICH_TS'])
         dataframe['ICH_CS'] = dataframe['close'].shift(-26)
-        # print(dataframe['ICH_CS'])
+
+        #log_to_results(str(metadata))
+        #log_to_results(str(dataframe['ICH_CS']))
 
         # RSI
         #dataframe['rsi'] = ta.RSI(dataframe)
@@ -116,6 +112,15 @@ class SampleStrategy(IStrategy):
         return dataframe
 
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+
+        #log_to_results("populate_entry_trend")
+
+        #log_to_results(str(dataframe['ICH_CS']))
+        #log_to_results(str(dataframe['high']))
+        #log_to_results(str(dataframe['ICH_KS']))
+        #log_to_results(str(dataframe['ICH_TS']))
+        #log_to_results(str(dataframe['ICH_SSA']))
+        #log_to_results(str(dataframe['ICH_SSB']))
 
         dataframe.loc[
             (   
@@ -126,6 +131,9 @@ class SampleStrategy(IStrategy):
                 & (dataframe['XXX'] > dataframe['XXX'])
             ),
             'enter_long'] = 1
+
+        #log_to_results(str(metadata))
+        #log_to_results(str(dataframe))
 
         #dataframe.loc[
             #(
