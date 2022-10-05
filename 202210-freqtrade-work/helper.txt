@@ -3,6 +3,9 @@ freqtrade download-data --days 90 --exchange gateio --config config-test.json -t
 
 freqtrade backtesting --config config-test.json --strategy SampleStrategy
 freqtrade backtesting --config config-test.json --strategy SampleStrategy --timerange=20221004-20221006
+freqtrade backtesting --config config-test.json --strategy SampleStrategy --timerange=20221004-20221006 --breakdown day
+
+freqtrade webserver --config config-test.json 
 
 
 MS Linux Ubuntu
