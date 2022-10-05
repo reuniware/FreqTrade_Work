@@ -1,4 +1,5 @@
 freqtrade download-data --days 90 --exchange gateio --config config-test.json -t 1d -t 4h
+^[[A(.env) gitpod /workspace/freqtrade (stable) $ freqtrade download-data --days 365 --exchange gateio --config config-test.json -t 15m
 
 freqtrade backtesting --config config-test.json --strategy SampleStrategy
 freqtrade backtesting --config config-test.json --strategy SampleStrategy --timerange=20221004-20221006
@@ -11,7 +12,7 @@ psftp -i C:\Users\Utilisateur1\Downloads\ClésPrivées\MaMachineLinux_key.ppk us
 mget -r freqtrade // pour rappatrier tout le répertoire freqtrade en local
 
 AMAZON EC2 Tokyo Debian Linux
-psftp -i "C:\_DVA\Tools\Putty\ClésPrivées\FreqTrade_Tokyo.ppk" admin@11.22.33.44
+psftp -i "C:\ICHIMOKUTRADER\Tools\Putty\ClésPrivées\FreqTrade_Tokyo.ppk" admin@11.22.33.44
 put C:\_ICHIMOKUTRADER\tmp\_CRYPT0\freqtrade-stable-configs\config-dynamic-2.json
 
 https://github.com/mrjbq7/ta-lib/issues/459
