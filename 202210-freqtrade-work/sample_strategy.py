@@ -119,11 +119,11 @@ class SampleStrategy(IStrategy):
 
         dataframe.loc[
             (   
-                (dataframe['ICH_CS'] > dataframe['high'])
-                & (dataframe['ICH_CS'] > dataframe['ICH_KS'])
-                & (dataframe['ICH_CS'] > dataframe['ICH_TS'])
-                & (dataframe['ICH_CS'] > dataframe['ICH_SSA'])
-                & (dataframe['ICH_CS'] > dataframe['ICH_SSB'])
+                (dataframe['XXX'] > dataframe['XXX'])
+                & (dataframe['XXX'] > dataframe['XXX'])
+                & (dataframe['XXX'] > dataframe['XXX'])
+                & (dataframe['XXX'] > dataframe['XXX'])
+                & (dataframe['XXX'] > dataframe['XXX'])
             ),
             'enter_long'] = 1
 
