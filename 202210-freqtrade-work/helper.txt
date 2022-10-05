@@ -1,6 +1,8 @@
 freqtrade download-data --days 90 --exchange gateio --config config-test.json -t 1d -t 4h
 
 freqtrade backtesting --config config-test.json --strategy SampleStrategy
+freqtrade backtesting --config config-test.json --strategy SampleStrategy --timerange=20221004-20221006
+
 
 MS Linux Ubuntu
 user001@11.22.33.44
