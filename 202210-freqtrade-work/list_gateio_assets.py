@@ -36,4 +36,4 @@ for ex in a:
         symbolb = lineb[1]['symbol']
         askb = lineb[1]['ask']
         if symbolb.endswith("/USDT"):
-            print("\"" + symbolb + ":USDT,\",")
+            print("\"" + symbolb + ":USDT\",")
