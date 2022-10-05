@@ -144,7 +144,7 @@ class SampleStrategy(IStrategy):
                 & (dataframe['close'] < dataframe['ICH_SSA'].shift(26))
                 & (dataframe['close'] < dataframe['ICH_SSB'].shift(26))
                 & (dataframe['open'] > dataframe['ICH_SSB'])
-                & (dataframe['close'] > dataframe['ICH_SSB'])
+                & (dataframe['close'] < dataframe['ICH_SSB'])
             ),
             'enter_short'] = 1
 
