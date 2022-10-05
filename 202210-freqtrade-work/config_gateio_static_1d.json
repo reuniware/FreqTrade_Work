@@ -1,7 +1,7 @@
 {
-  "max_open_trades": -1,
+  "max_open_trades": 10,
   "stake_currency": "USDT",
-  "stake_amount": 100,
+  "stake_amount": "unlimited",
   "tradable_balance_ratio": 0.99,
   "fiat_display_currency": "USD",
   "dry_run": true,
@@ -74,7 +74,10 @@
           "CITY/USDT:USDT",
           "RSR/USDT:USDT",
           "CHR/USDT:USDT",
-          "CAKE/USDT:USDT"
+          "CAKE/USDT:USDT",
+          "BTC/USDT:USDT",
+          "CHZ/USDT:USDT",
+          "COTI/USDT:USDT"
         ],
         "pair_blacklist": [
         ]
