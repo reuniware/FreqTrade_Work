@@ -48,7 +48,7 @@ class SampleStrategy(IStrategy):
     minimal_roi = {
         #"60": 0.01,
         #"30": 0.01,
-        "0": 0.25,
+        "0": 0.29,
     }
 
     # Optimal stoploss designed for the strategy.
@@ -62,7 +62,7 @@ class SampleStrategy(IStrategy):
     # trailing_stop_positive_offset = 0.0  # Disabled / not configured
 
     # Optimal timeframe for the strategy.
-    timeframe = '1d'
+    timeframe = '15m'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = True
