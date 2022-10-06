@@ -1,13 +1,19 @@
 source .env/bin/activate
 
+#DATA DOWNLOADING
 freqtrade download-data --days 90 --exchange gateio --config config-test.json -t 1d -t 4h
 freqtrade download-data --days 365 --exchange gateio --config config-test.json -t 15m
 
+#BACKTESTING
 freqtrade backtesting --config config-test.json --strategy SampleStrategy
 freqtrade backtesting --config config-test.json --strategy SampleStrategy --timerange=20221004-20221006
 freqtrade backtesting --config config-test.json --strategy SampleStrategy --timerange=20221004-20221006 --breakdown day
 
+#WEBSERVER FOR BACKTESTING
 freqtrade webserver --config config-test.json 
+
+#HYPEROPT
+freqtrade hyperopt -c config-gateio.json -s SampleStrategy --hyperopt-loss OnlyProfitHyperOptLoss --spaces stoploss
 
 
 MS Linux Ubuntu
