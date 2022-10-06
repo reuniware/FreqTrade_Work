@@ -14,7 +14,7 @@ freqtrade webserver --config config-test.json
 
 #HYPEROPT
 freqtrade hyperopt -c config-gateio.json -s SampleStrategy --hyperopt-loss OnlyProfitHyperOptLoss --spaces stoploss
-
+freqtrade hyperopt -c config-gateio.json -s SampleStrategy --hyperopt-loss OnlyProfitHyperOptLoss --spaces stoploss --timeframe 1d --timerange=20221001-20221006
 
 MS Linux Ubuntu
 user001@11.22.33.44
