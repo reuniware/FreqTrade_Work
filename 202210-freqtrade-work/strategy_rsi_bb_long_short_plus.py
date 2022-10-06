@@ -228,3 +228,54 @@ class SampleStrategy(IStrategy):
 # freqtrade backtesting -c config-gateio.json -s SampleStrategy --timeframe=1h --timerange=20220701-20221006
 
 # Awesome !! Stoploss = 0.015625 !!!
+
+=================== SUMMARY METRICS ===================
+# | Metric                      | Value                 |
+# |-----------------------------+-----------------------|
+# | Backtesting from            | 2022-07-01 00:00:00   |
+# | Backtesting to              | 2022-10-06 00:00:00   |
+# | Max open trades             | 2                     |
+# |                             |                       |
+# | Total/Daily Avg Trades      | 1437 / 14.81          |
+# | Starting balance            | 1000 USDT             |
+# | Final balance               | 14789.013 USDT        |
+# | Absolute profit             | 13789.013 USDT        |
+# | Total profit %              | 1378.90%              |
+# | CAGR %                      | 2525406.26%           |
+# | Profit factor               | 1.60                  |
+# | Trades per day              | 14.81                 |
+# | Avg. daily profit %         | 14.22%                |
+# | Avg. stake amount           | 2775.369 USDT         |
+# | Total trade volume          | 3988205.454 USDT      |
+# |                             |                       |
+# | Long / Short                | 591 / 846             |
+# | Total profit Long %         | 728.75%               |
+# | Total profit Short %        | 650.15%               |
+# | Absolute profit Long        | 7287.543 USDT         |
+# | Absolute profit Short       | 6501.47 USDT          |
+# |                             |                       |
+# | Best Pair                   | BIT/USDT:USDT 54.37%  |
+# | Worst Pair                  | ZEC/USDT:USDT -9.15%  |
+# | Best trade                  | DEFI/USDT:USDT 19.20% |
+# | Worst trade                 | RON/USDT:USDT -7.98%  |
+# | Best day                    | 1212.418 USDT         |
+# | Worst day                   | -660.631 USDT         |
+# | Days win/draw/lose          | 77 / 0 / 21           |
+# | Avg. Duration Winners       | 2:52:00               |
+# | Avg. Duration Loser         | 2:43:00               |
+# | Rejected Entry signals      | 2438404               |
+# | Entry/Exit Timeouts         | 515 / 1830            |
+# |                             |                       |
+# | Min balance                 | 986.243 USDT          |
+# | Max balance                 | 15169.875 USDT        |
+# | Max % of account underwater | 12.19%                |
+# | Absolute Drawdown (Account) | 12.19%                |
+# | Absolute Drawdown           | 1666.479 USDT         |
+# | Drawdown high               | 12674.029 USDT        |
+# | Drawdown low                | 11007.55 USDT         |
+# | Drawdown Start              | 2022-09-18 13:45:00   |
+# | Drawdown End                | 2022-09-21 13:15:00   |
+# | Market change               | 4.53%                 |
+# =======================================================
+
+# freqtrade backtesting -c config-gateio.json -s SampleStrategy --timerange=20220701-20221006 --timeframe=15m
