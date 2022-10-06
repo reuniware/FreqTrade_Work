@@ -1,4 +1,4 @@
-#List all possible assets for trading in futures with freqtrade ;)
+#List all possible assets for trading in futures on gateio with freqtrade ;)
 #pip install gate-api
 
 from __future__ import print_function
