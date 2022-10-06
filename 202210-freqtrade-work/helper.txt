@@ -1,3 +1,5 @@
+source .env/bin/activate
+
 freqtrade download-data --days 90 --exchange gateio --config config-test.json -t 1d -t 4h
 freqtrade download-data --days 365 --exchange gateio --config config-test.json -t 15m
 
@@ -27,8 +29,6 @@ Successfully installed TA-Lib-0.4.21
 
 D:\freqtrade-stable>freqtrade backtesting --strategy SampleStrategy --starting-balance 100
 D:\freqtrade-stable>freqtrade download-data --days 90 --exchange binance
-
-user001@MaMachineLinux:~/freqtrade/user_data$ source .env/bin/activate
 
 freqtrade trade --strategy EMAPriceCrossoverWithThreshold --starting-balance 320
 freqtrade show-trades --db-url sqlite:///./tradesv3.sqlite
