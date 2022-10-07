@@ -142,3 +142,54 @@ class SampleStrategy(IStrategy):
 
         return dataframe
 
+
+ # =================== SUMMARY METRICS ====================
+# | Metric                      | Value                  |
+# |-----------------------------+------------------------|
+# | Backtesting from            | 2022-01-01 00:00:00    |
+# | Backtesting to              | 2022-10-07 00:00:00    |
+# | Max open trades             | 2                      |
+# |                             |                        |
+# | Total/Daily Avg Trades      | 5677 / 20.35           |
+# | Starting balance            | 1000 USDT              |
+# | Final balance               | 399596.382 USDT        |
+# | Absolute profit             | 398596.382 USDT        |
+# | Total profit %              | 39859.64%              |
+# | CAGR %                      | 253153.28%             |
+# | Profit factor               | 1.47                   |
+# | Trades per day              | 20.35                  |
+# | Avg. daily profit %         | 142.87%                |
+# | Avg. stake amount           | 23922.218 USDT         |
+# | Total trade volume          | 135806434.268 USDT     |
+# |                             |                        |
+# | Long / Short                | 2529 / 3148            |
+# | Total profit Long %         | 18984.89%              |
+# | Total profit Short %        | 20874.75%              |
+# | Absolute profit Long        | 189848.911 USDT        |
+# | Absolute profit Short       | 208747.471 USDT        |
+# |                             |                        |
+# | Best Pair                   | BIT/USDT:USDT 198.68%  |
+# | Worst Pair                  | ZEC/USDT:USDT -28.48%  |
+# | Best trade                  | WSB/USDT:USDT 20.81%   |
+# | Worst trade                 | LUNA/USDT:USDT -20.00% |
+# | Best day                    | 32629.272 USDT         |
+# | Worst day                   | -18411.57 USDT         |
+# | Days win/draw/lose          | 202 / 2 / 75           |
+# | Avg. Duration Winners       | 2:18:00                |
+# | Avg. Duration Loser         | 1:38:00                |
+# | Rejected Entry signals      | 6071333                |
+# | Entry/Exit Timeouts         | 1170 / 3304            |
+# |                             |                        |
+# | Min balance                 | 989.506 USDT           |
+# | Max balance                 | 399596.382 USDT        |
+# | Max % of account underwater | 40.74%                 |
+# | Absolute Drawdown (Account) | 11.73%                 |
+# | Absolute Drawdown           | 44030.514 USDT         |
+# | Drawdown high               | 374463.064 USDT        |
+# | Drawdown low                | 330432.549 USDT        |
+# | Drawdown Start              | 2022-09-18 13:45:00    |
+# | Drawdown End                | 2022-09-26 06:30:00    |
+# | Market change               | -65.58%                |
+# ========================================================
+
+# freqtrade backtesting -c config-gateio.json --strategy SampleStrategy --timerange=20220101-20221007 --timeframe="15m"
