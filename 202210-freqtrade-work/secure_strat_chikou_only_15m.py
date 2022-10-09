@@ -93,7 +93,7 @@ class SampleStrategy(IStrategy):
     }
 
     def informative_pairs(self):
-        return
+        return []
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
