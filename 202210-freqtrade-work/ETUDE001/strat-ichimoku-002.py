@@ -94,14 +94,14 @@ class StratIchimoku002(IStrategy):
 
     def informative_pairs(self):
         # get access to all pairs available in whitelist.
-        pairs = self.dp.current_whitelist()
+        #pairs = self.dp.current_whitelist()
         # Assign tf to each pair so they can be downloaded and cached for strategy.
-        informative_pairs = [(pair, '1d') for pair in pairs]
+        #informative_pairs = [(pair, '1d') for pair in pairs]
         # Optionally Add additional "static" pairs
-        informative_pairs += [("BTC/USDT:USDT", "1h"),
-                              ("BTC/USDT:USDT", "4h"),
-                            ]
-        return informative_pairs
+        #informative_pairs += [("BTC/USDT:USDT", "1h"),
+        #                      ("BTC/USDT:USDT", "4h"),
+        #                    ]
+        return [] #informative_pairs
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
@@ -111,10 +111,10 @@ class StratIchimoku002(IStrategy):
             # Don't do anything if DataProvider is not available.
             return dataframe
 
-        inf_tf = '1h'
+        #inf_tf = '1h'
         # Get the informative pair
-        informative = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
-        dataframe = merge_informative_pair(dataframe, informative, self.timeframe, inf_tf, ffill=True)
+        #informative = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
+        #dataframe = merge_informative_pair(dataframe, informative, self.timeframe, inf_tf, ffill=True)
         #log_to_results(dataframe.to_string())
 
         dataframe['ICH_SSB'] = taichi.trend.ichimoku_b(dataframe['high'], dataframe['low'], window2=26, window3=52).shift(26)
