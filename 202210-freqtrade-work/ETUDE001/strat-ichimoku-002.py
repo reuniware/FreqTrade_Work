@@ -51,7 +51,7 @@ class StratIchimoku002(IStrategy):
     minimal_roi = {
         #"60": 0.01,
         #"30": 0.01,
-        "0": 0.29/4,
+        "0": 0.29/8,
     }
 
     # Optimal stoploss designed for the strategy.
@@ -76,7 +76,7 @@ class StratIchimoku002(IStrategy):
     ignore_roi_if_entry_signal = False
 
     # Number of candles the strategy requires before producing valid signals
-    startup_candle_count: int = 26
+    startup_candle_count: int = 30
 
     # Optional order type mapping.
     order_types = {
@@ -133,27 +133,15 @@ class StratIchimoku002(IStrategy):
 
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        #log_to_results("populate_entry_trend")
-
-        #log_to_results(str(dataframe['ICH_CS']))
-        #log_to_results(str(dataframe['high']))
-        #log_to_results(str(dataframe['ICH_KS']))
-        #log_to_results(str(dataframe['ICH_TS']))
-        #log_to_results(str(dataframe['ICH_SSA']))
-        #log_to_results(str(dataframe['ICH_SSB']))
-
         dataframe.loc[
             (   
-                (dataframe['close'] > dataframe['high'].shift(26))
-                & (dataframe['close'] > dataframe['ICH_KS'].shift(26))
-                & (dataframe['close'] > dataframe['ICH_TS'].shift(26))
-                & (dataframe['close'] > dataframe['ICH_SSA'].shift(26))
-                & (dataframe['close'] > dataframe['ICH_SSB'].shift(26))
+                (dataframe['ICH_CS'] > dataframe['high'].shift(26))
+                & (dataframe['ICH_CS'] > dataframe['ICH_KS'].shift(26))
+                & (dataframe['ICH_CS'] > dataframe['ICH_TS'].shift(26))
+                & (dataframe['ICH_CS'] > dataframe['ICH_SSA'].shift(26))
+                & (dataframe['ICH_CS'] > dataframe['ICH_SSB'].shift(26))
                 & (dataframe['open'] < dataframe['ICH_SSB'])
                 & (dataframe['close'] > dataframe['ICH_SSB'])
-                #& (dataframe['close_1h'] > dataframe['open_1h']) #here the btc values
-                #& (qtpylib.crossed_below(dataframe['rsi'], 30))  # Signal: RSI crosses above 30
-                & (dataframe['rsi'] < 30)  # Signal: RSI crosses above 30
             ),
             'enter_long'] = 1
 
@@ -168,7 +156,7 @@ class StratIchimoku002(IStrategy):
                 & (dataframe['close'] < dataframe['ICH_SSB'])
                 #& (dataframe['close_1h'] < dataframe['open_1h']) #here the btc values
                 #& (qtpylib.crossed_above(dataframe['rsi'], 70))  # Signal: RSI crosses above 30
-                & (dataframe['rsi'] > 30)  # Signal: RSI crosses above 30
+                & (dataframe['rsi'] < 30)  # Signal: RSI crosses above 30
             ),
             'enter_short'] = 1
 
