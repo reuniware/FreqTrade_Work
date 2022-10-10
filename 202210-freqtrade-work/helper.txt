@@ -1,5 +1,8 @@
 source .env/bin/activate
 
+#TRADING
+--db-url=sqlite:///myfile1.sqlite
+
 #DATA DOWNLOADING
 freqtrade download-data --days 90 --exchange gateio --config config-test.json -t 1d -t 4h
 freqtrade download-data --days 365 --exchange gateio --config config-test.json -t 15m
