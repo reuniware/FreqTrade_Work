@@ -124,7 +124,7 @@ class StratIchimoku002(IStrategy):
         #print(dataframe['ICH_KS'])
         dataframe['ICH_TS'] = taichi.trend.ichimoku_conversion_line(dataframe['high'], dataframe['low'])
         #print(dataframe['ICH_TS'])
-        dataframe['ICH_CS'] = dataframe['close'].shift(-26)
+        dataframe['ICH_CS'] = dataframe['close'].shift(26)
 
         # RSI
         dataframe['rsi'] = ta.RSI(dataframe)
