@@ -32,7 +32,7 @@ def log_to_results(str_to_log):
     fr.close()
 
 # This class is a sample. Feel free to customize it.
-class SampleStrategy(IStrategy):
+class STRAT001(IStrategy):
     delete_log_results()
 
     # Strategy interface version - allow new iterations of the strategy interface.
