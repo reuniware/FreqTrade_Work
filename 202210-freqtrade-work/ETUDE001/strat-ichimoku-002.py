@@ -42,7 +42,7 @@ class StratIchimoku002(IStrategy):
     INTERFACE_VERSION = 3
 
     # Can this strategy go short?
-    can_short: bool = False
+    can_short: bool = True
 
     #roi0 = RealParameter(0.01, 0.09, decimals=1, default=0.04, space="buy")
 
@@ -65,7 +65,7 @@ class StratIchimoku002(IStrategy):
     # trailing_stop_positive_offset = 0.0  # Disabled / not configured
 
     # Optimal timeframe for the strategy.
-    timeframe = '15m'
+    timeframe = '4h'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = True
@@ -76,7 +76,7 @@ class StratIchimoku002(IStrategy):
     ignore_roi_if_entry_signal = False
 
     # Number of candles the strategy requires before producing valid signals
-    startup_candle_count: int = 30
+    startup_candle_count: int = 100
 
     # Optional order type mapping.
     order_types = {
@@ -105,11 +105,9 @@ class StratIchimoku002(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        #log_to_results("populate_indicators" + str(metadata))
-
-        if not self.dp:
+        #if not self.dp:
             # Don't do anything if DataProvider is not available.
-            return dataframe
+            #return dataframe
 
         #inf_tf = '1h'
         # Get the informative pair
@@ -124,22 +122,35 @@ class StratIchimoku002(IStrategy):
         #print(dataframe['ICH_KS'])
         dataframe['ICH_TS'] = taichi.trend.ichimoku_conversion_line(dataframe['high'], dataframe['low'])
         #print(dataframe['ICH_TS'])
-        dataframe['ICH_CS'] = dataframe['close'].shift(26)
+        dataframe['ICH_CS'] = dataframe['close']
+        dataframe['ICH_CS_HIGH'] = dataframe['high'].shift(26)
+        dataframe['ICH_CS_KS'] = dataframe['ICH_KS'].shift(26)
+        dataframe['ICH_CS_TS'] = dataframe['ICH_TS'].shift(26)
+        dataframe['ICH_CS_SSA'] = dataframe['ICH_SSA'].shift(26)
+        dataframe['ICH_CS_SSB'] = dataframe['ICH_SSB'].shift(26)
 
         # RSI
         dataframe['rsi'] = ta.RSI(dataframe)
 
         return dataframe
-
+    
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+
+        #if 'ETH/USDT' in str(metadata):
+        #    log_to_results(dataframe.to_string())
+
+        #log_to_results(str(metadata) + ' ' + str(dataframe['open'].loc[0]))
+        #log_to_results(str(metadata) + ' ' + str(dataframe['open'].loc[1]))
+        #log_to_results(str(metadata) + ' ' + str(dataframe['ICH_SSB'].loc[0]))
+        #log_to_results(str(metadata) + ' ' + str(dataframe['ICH_SSB'].loc[1]))
 
         dataframe.loc[
             (   
-                (dataframe['ICH_CS'] > dataframe['high'].shift(26))
-                & (dataframe['ICH_CS'] > dataframe['ICH_KS'].shift(26))
-                & (dataframe['ICH_CS'] > dataframe['ICH_TS'].shift(26))
-                & (dataframe['ICH_CS'] > dataframe['ICH_SSA'].shift(26))
-                & (dataframe['ICH_CS'] > dataframe['ICH_SSB'].shift(26))
+                (dataframe['ICH_CS'] > dataframe['ICH_CS_HIGH'])
+                & (dataframe['ICH_CS'] > dataframe['ICH_CS_KS'])
+                & (dataframe['ICH_CS'] > dataframe['ICH_CS_TS'])
+                & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSA'])
+                & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSB'])
                 & (dataframe['open'] < dataframe['ICH_SSB'])
                 & (dataframe['close'] > dataframe['ICH_SSB'])
             ),
@@ -147,27 +158,15 @@ class StratIchimoku002(IStrategy):
 
         dataframe.loc[
             (   
-                (dataframe['close'] < dataframe['low'].shift(26))
-                & (dataframe['close'] < dataframe['ICH_KS'].shift(26))
-                & (dataframe['close'] < dataframe['ICH_TS'].shift(26))
-                & (dataframe['close'] < dataframe['ICH_SSA'].shift(26))
-                & (dataframe['close'] < dataframe['ICH_SSB'].shift(26))
+                (dataframe['ICH_CS'] < dataframe['ICH_CS_HIGH'])
+                & (dataframe['ICH_CS'] < dataframe['ICH_CS_KS'])
+                & (dataframe['ICH_CS'] < dataframe['ICH_CS_TS'])
+                & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSA'])
+                & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSB'])
                 & (dataframe['open'] > dataframe['ICH_SSB'])
                 & (dataframe['close'] < dataframe['ICH_SSB'])
-                #& (dataframe['close_1h'] < dataframe['open_1h']) #here the btc values
-                #& (qtpylib.crossed_above(dataframe['rsi'], 70))  # Signal: RSI crosses above 30
-                & (dataframe['rsi'] < 30)  # Signal: RSI crosses above 30
             ),
             'enter_short'] = 1
-
-        #log_to_results(str(metadata))
-        #log_to_results(str(dataframe))
-
-        #dataframe.loc[
-            #( -
-            #    (qtpylib.crossed_above(dataframe['ICH_KS'], dataframe['ICH_TS']))
-            #),
-            #'enter_short'] = 1
 
         return dataframe
 
