@@ -6,6 +6,8 @@
   "tradable_balance_ratio": 0.99,
   "fiat_display_currency": "USD",
   "force_entry_enable": true,
+  "trading_mode": "futures",
+  "margin_mode": "isolated",
   "unfilledtimeout": {
       "entry": 15,
       "exit": 15,
@@ -43,16 +45,6 @@
       "ccxt_config": {},
       "ccxt_async_config": {},
       "pair_whitelist": [
-        "1INCH/USDT",
-        "BTC/USDT",
-        "BTT/USDT",
-        "CAKE/USDT",
-        "CHZ/USDT",
-        "COMP/USDT",
-        "COTI/USDT",
-        "DOGE/USDT",
-        "MATIC/USDT",
-        "MKR/USDT"
       ],
       "pair_blacklist": [
           // Exchange Tokens
@@ -71,8 +63,8 @@
 },
 "pairlists": [
   {
-    "method": "StaticPairList",
-    "number_assets": 6,
+    "method": "VolumePairList",
+    "number_assets": 100,
     "sort_key": "quoteVolume",
     "min_value": 0,
     "refresh_period": 1800
