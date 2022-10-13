@@ -198,18 +198,18 @@ class StratIchimoku003(IStrategy):
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSB'])
-                & (
-                    (dataframe['ICH_SSB'] > dataframe['ICH_SSA'])
-                    & (dataframe['open'] < dataframe['ICH_SSB'])
-                    & (dataframe['close'] > dataframe['ICH_SSB'])
-                    & (dataframe['close'] > dataframe['ICH_KS'])
-                )
+                #& (
+                #    (dataframe['ICH_SSB'] > dataframe['ICH_SSA'])
+                #    & (dataframe['open'] < dataframe['ICH_SSB'])
+                #    & (dataframe['close'] > dataframe['ICH_SSB'])
+                #    & (dataframe['close'] > dataframe['ICH_KS'])
+                #)
             ),
             'enter_long'] = 1
 
         dataframe.loc[
             (   
-                (dataframe['BTC_ICH_CS_15M'] > dataframe['BTC_ICH_CS_LOW_15M'])
+                (dataframe['BTC_ICH_CS_15M'] < dataframe['BTC_ICH_CS_LOW_15M'])
                 & (dataframe['BTC_ICH_CS_15M'] < dataframe['BTC_ICH_CS_KS_15M'])
                 & (dataframe['BTC_ICH_CS_15M'] < dataframe['BTC_ICH_CS_TS_15M'])
                 & (dataframe['BTC_ICH_CS_15M'] < dataframe['BTC_ICH_CS_SSA_15M'])
@@ -234,11 +234,11 @@ class StratIchimoku003(IStrategy):
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSB'])
-                & (
-                    (dataframe['ICH_SSA'] > dataframe['ICH_SSB'])
-                    & (dataframe['open'] > dataframe['ICH_SSB'])
-                    & (dataframe['close'] < dataframe['ICH_SSB'])
-                )
+                #& (
+                #    (dataframe['ICH_SSA'] > dataframe['ICH_SSB'])
+                #    & (dataframe['open'] > dataframe['ICH_SSB'])
+                #    & (dataframe['close'] < dataframe['ICH_SSB'])
+                #)
             ),
             'enter_short'] = 1
 
