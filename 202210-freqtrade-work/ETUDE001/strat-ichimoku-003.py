@@ -138,11 +138,8 @@ class StratIchimoku003(IStrategy):
         #Ichimoku calculations for the BTC in 1h
         dataframe['BTC_ICH_SSB_1H'] = taichi.trend.ichimoku_b(dataframe['high_1h'], dataframe['low_1h'], window2=26, window3=52).shift(26)
         dataframe['BTC_ICH_SSA_1H'] = taichi.trend.ichimoku_a(dataframe['high_1h'], dataframe['low_1h'], window1=9, window2=26).shift(26)
-        #print(dataframe['ICH_SSA'])
         dataframe['BTC_ICH_KS_1H'] = taichi.trend.ichimoku_base_line(dataframe['high_1h'], dataframe['low_1h'])
-        #print(dataframe['ICH_KS'])
         dataframe['BTC_ICH_TS_1H'] = taichi.trend.ichimoku_conversion_line(dataframe['high_1h'], dataframe['low_1h'])
-        #print(dataframe['ICH_TS'])
         dataframe['BTC_ICH_CS_1H'] = dataframe['close_1h']
         dataframe['BTC_ICH_CS_HIGH_1H'] = dataframe['high_1h'].shift(26)
         dataframe['BTC_ICH_CS_LOW_1H'] = dataframe['low_1h'].shift(26)
@@ -154,11 +151,8 @@ class StratIchimoku003(IStrategy):
         #Ichimoku calculations for the strategy's timeframe
         dataframe['ICH_SSB'] = taichi.trend.ichimoku_b(dataframe['high'], dataframe['low'], window2=26, window3=52).shift(26)
         dataframe['ICH_SSA'] = taichi.trend.ichimoku_a(dataframe['high'], dataframe['low'], window1=9, window2=26).shift(26)
-        #print(dataframe['ICH_SSA'])
         dataframe['ICH_KS'] = taichi.trend.ichimoku_base_line(dataframe['high'], dataframe['low'])
-        #print(dataframe['ICH_KS'])
         dataframe['ICH_TS'] = taichi.trend.ichimoku_conversion_line(dataframe['high'], dataframe['low'])
-        #print(dataframe['ICH_TS'])
         dataframe['ICH_CS'] = dataframe['close']
         dataframe['ICH_CS_HIGH'] = dataframe['high'].shift(26)
         dataframe['ICH_CS_LOW'] = dataframe['low'].shift(26)
@@ -176,11 +170,6 @@ class StratIchimoku003(IStrategy):
 
         #if 'ETH/USDT' in str(metadata):
         #    log_to_results(dataframe.to_string())
-
-        #log_to_results(str(metadata) + ' ' + str(dataframe['open'].loc[0]))
-        #log_to_results(str(metadata) + ' ' + str(dataframe['open'].loc[1]))
-        #log_to_results(str(metadata) + ' ' + str(dataframe['ICH_SSB'].loc[0]))
-        #log_to_results(str(metadata) + ' ' + str(dataframe['ICH_SSB'].loc[1]))
 
         dataframe.loc[
             (   
@@ -220,7 +209,27 @@ class StratIchimoku003(IStrategy):
 
         dataframe.loc[
             (   
-                (dataframe['ICH_CS'] < dataframe['ICH_CS_LOW'])
+                (dataframe['BTC_ICH_CS_15M'] > dataframe['BTC_ICH_CS_LOW_15M'])
+                & (dataframe['BTC_ICH_CS_15M'] < dataframe['BTC_ICH_CS_KS_15M'])
+                & (dataframe['BTC_ICH_CS_15M'] < dataframe['BTC_ICH_CS_TS_15M'])
+                & (dataframe['BTC_ICH_CS_15M'] < dataframe['BTC_ICH_CS_SSA_15M'])
+                & (dataframe['BTC_ICH_CS_15M'] < dataframe['BTC_ICH_CS_SSB_15M'])
+                & (dataframe['close_15m'] < dataframe['open_15m'])
+                & (dataframe['close_15m'] < dataframe['BTC_ICH_CS_SSA_15M'])
+                & (dataframe['close_15m'] < dataframe['BTC_ICH_CS_SSB_15M'])
+                & (dataframe['close_15m'] < dataframe['BTC_ICH_CS_KS_15M'])
+                & (dataframe['close_15m'] < dataframe['BTC_ICH_CS_TS_15M'])
+                & (dataframe['BTC_ICH_CS_1H'] < dataframe['BTC_ICH_CS_HIGH_1H'])
+                & (dataframe['BTC_ICH_CS_1H'] < dataframe['BTC_ICH_CS_KS_1H'])
+                & (dataframe['BTC_ICH_CS_1H'] < dataframe['BTC_ICH_CS_TS_1H'])
+                & (dataframe['BTC_ICH_CS_1H'] < dataframe['BTC_ICH_CS_SSA_1H'])
+                & (dataframe['BTC_ICH_CS_1H'] < dataframe['BTC_ICH_CS_SSB_1H'])
+                & (dataframe['close_1h'] < dataframe['open_1h'])
+                & (dataframe['close_1h'] < dataframe['BTC_ICH_CS_SSA_1H'])
+                & (dataframe['close_1h'] < dataframe['BTC_ICH_CS_SSB_1H'])
+                & (dataframe['close_1h'] < dataframe['BTC_ICH_CS_KS_1H'])
+                & (dataframe['close_1h'] < dataframe['BTC_ICH_CS_TS_1H'])
+                & (dataframe['ICH_CS'] < dataframe['ICH_CS_LOW'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_KS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSA'])
