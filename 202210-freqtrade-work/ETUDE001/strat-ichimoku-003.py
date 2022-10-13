@@ -98,7 +98,7 @@ class StratIchimoku003(IStrategy):
         # Assign tf to each pair so they can be downloaded and cached for strategy.
         #informative_pairs = [(pair, '1h') for pair in pairs]
         # Optionally Add additional "static" pairs
-        informative_pairs = [("BTC/USDT:USDT", "1h"), ("BTC/USDT:USDT", "4h"),]
+        informative_pairs = [("BTC/USDT:USDT", "15m"), ("BTC/USDT:USDT", "1h"), ("BTC/USDT:USDT", "4h"),]
         return informative_pairs
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -107,6 +107,12 @@ class StratIchimoku003(IStrategy):
             # Don't do anything if DataProvider is not available.
             #return dataframe
 
+        inf_tf = '15m'
+        # Get the informative pair
+        informative = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
+        dataframe = merge_informative_pair(dataframe, informative, self.timeframe, inf_tf, ffill=True)
+        #log_to_results(dataframe.to_string())
+
         inf_tf = '1h'
         # Get the informative pair
         informative = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
@@ -114,20 +120,20 @@ class StratIchimoku003(IStrategy):
         #log_to_results(dataframe.to_string())
 
         #Ichimoku calculations for the BTC in 1h
-        dataframe['BTC_ICH_SSB_H1'] = taichi.trend.ichimoku_b(dataframe['high_1h'], dataframe['low_1h'], window2=26, window3=52).shift(26)
-        dataframe['BTC_ICH_SSA_H1'] = taichi.trend.ichimoku_a(dataframe['high_1h'], dataframe['low_1h'], window1=9, window2=26).shift(26)
+        dataframe['BTC_ICH_SSB_1H'] = taichi.trend.ichimoku_b(dataframe['high_1h'], dataframe['low_1h'], window2=26, window3=52).shift(26)
+        dataframe['BTC_ICH_SSA_1H'] = taichi.trend.ichimoku_a(dataframe['high_1h'], dataframe['low_1h'], window1=9, window2=26).shift(26)
         #print(dataframe['ICH_SSA'])
-        dataframe['BTC_ICH_KS_H1'] = taichi.trend.ichimoku_base_line(dataframe['high_1h'], dataframe['low_1h'])
+        dataframe['BTC_ICH_KS_1H'] = taichi.trend.ichimoku_base_line(dataframe['high_1h'], dataframe['low_1h'])
         #print(dataframe['ICH_KS'])
-        dataframe['BTC_ICH_TS_H1'] = taichi.trend.ichimoku_conversion_line(dataframe['high_1h'], dataframe['low_1h'])
+        dataframe['BTC_ICH_TS_1H'] = taichi.trend.ichimoku_conversion_line(dataframe['high_1h'], dataframe['low_1h'])
         #print(dataframe['ICH_TS'])
-        dataframe['BTC_ICH_CS_H1'] = dataframe['close_1h']
-        dataframe['BTC_ICH_CS_HIGH_H1'] = dataframe['high_1h'].shift(26)
-        dataframe['BTC_ICH_CS_LOW_H1'] = dataframe['low_1h'].shift(26)
-        dataframe['BTC_ICH_CS_KS_H1'] = dataframe['BTC_ICH_KS_H1'].shift(26)
-        dataframe['BTC_ICH_CS_TS_H1'] = dataframe['BTC_ICH_TS_H1'].shift(26)
-        dataframe['BTC_ICH_CS_SSA_H1'] = dataframe['BTC_ICH_SSA_H1'].shift(26)
-        dataframe['BTC_ICH_CS_SSB_H1'] = dataframe['BTC_ICH_SSB_H1'].shift(26)
+        dataframe['BTC_ICH_CS_1H'] = dataframe['close_1h']
+        dataframe['BTC_ICH_CS_HIGH_1H'] = dataframe['high_1h'].shift(26)
+        dataframe['BTC_ICH_CS_LOW_1H'] = dataframe['low_1h'].shift(26)
+        dataframe['BTC_ICH_CS_KS_1H'] = dataframe['BTC_ICH_KS_1H'].shift(26)
+        dataframe['BTC_ICH_CS_TS_1H'] = dataframe['BTC_ICH_TS_1H'].shift(26)
+        dataframe['BTC_ICH_CS_SSA_1H'] = dataframe['BTC_ICH_SSA_1H'].shift(26)
+        dataframe['BTC_ICH_CS_SSB_1H'] = dataframe['BTC_ICH_SSB_1H'].shift(26)
 
         #Ichimoku calculations for the strategy's timeframe
         dataframe['ICH_SSB'] = taichi.trend.ichimoku_b(dataframe['high'], dataframe['low'], window2=26, window3=52).shift(26)
@@ -162,7 +168,17 @@ class StratIchimoku003(IStrategy):
 
         dataframe.loc[
             (   
-                (dataframe['ICH_CS'] > dataframe['ICH_CS_HIGH'])
+                (dataframe['BTC_ICH_CS_1H'] > dataframe['BTC_ICH_CS_HIGH_1H'])
+                & (dataframe['BTC_ICH_CS_1H'] > dataframe['BTC_ICH_CS_KS_1H'])
+                & (dataframe['BTC_ICH_CS_1H'] > dataframe['BTC_ICH_CS_TS_1H'])
+                & (dataframe['BTC_ICH_CS_1H'] > dataframe['BTC_ICH_CS_SSA_1H'])
+                & (dataframe['BTC_ICH_CS_1H'] > dataframe['BTC_ICH_CS_SSB_1H'])
+                & (dataframe['close_1h'] > dataframe['open_1h'])
+                & (dataframe['close_1h'] > dataframe['BTC_ICH_CS_SSA_1H'])
+                & (dataframe['close_1h'] > dataframe['BTC_ICH_CS_SSB_1H'])
+                & (dataframe['close_1h'] > dataframe['BTC_ICH_CS_KS_1H'])
+                & (dataframe['close_1h'] > dataframe['BTC_ICH_CS_TS_1H'])
+                & (dataframe['ICH_CS'] > dataframe['ICH_CS_HIGH'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_KS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSA'])
