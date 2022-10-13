@@ -119,6 +119,22 @@ class StratIchimoku003(IStrategy):
         dataframe = merge_informative_pair(dataframe, informative, self.timeframe, inf_tf, ffill=True)
         #log_to_results(dataframe.to_string())
 
+        #Ichimoku calculations for the BTC in 15m
+        dataframe['BTC_ICH_SSB_15M'] = taichi.trend.ichimoku_b(dataframe['high_15m'], dataframe['low_15m'], window2=26, window3=52).shift(26)
+        dataframe['BTC_ICH_SSA_15M'] = taichi.trend.ichimoku_a(dataframe['high_15m'], dataframe['low_15m'], window1=9, window2=26).shift(26)
+        #print(dataframe['ICH_SSA'])
+        dataframe['BTC_ICH_KS_15M'] = taichi.trend.ichimoku_base_line(dataframe['high_15m'], dataframe['low_15m'])
+        #print(dataframe['ICH_KS'])
+        dataframe['BTC_ICH_TS_15M'] = taichi.trend.ichimoku_conversion_line(dataframe['high_15m'], dataframe['low_15m'])
+        #print(dataframe['ICH_TS'])
+        dataframe['BTC_ICH_CS_15M'] = dataframe['close_1h']
+        dataframe['BTC_ICH_CS_HIGH_15M'] = dataframe['high_1h'].shift(26)
+        dataframe['BTC_ICH_CS_LOW_15M'] = dataframe['low_1h'].shift(26)
+        dataframe['BTC_ICH_CS_KS_15M'] = dataframe['BTC_ICH_KS_15M'].shift(26)
+        dataframe['BTC_ICH_CS_TS_15M'] = dataframe['BTC_ICH_TS_15M'].shift(26)
+        dataframe['BTC_ICH_CS_SSA_15M'] = dataframe['BTC_ICH_SSA_15M'].shift(26)
+        dataframe['BTC_ICH_CS_SSB_15M'] = dataframe['BTC_ICH_SSB_15M'].shift(26)
+
         #Ichimoku calculations for the BTC in 1h
         dataframe['BTC_ICH_SSB_1H'] = taichi.trend.ichimoku_b(dataframe['high_1h'], dataframe['low_1h'], window2=26, window3=52).shift(26)
         dataframe['BTC_ICH_SSA_1H'] = taichi.trend.ichimoku_a(dataframe['high_1h'], dataframe['low_1h'], window1=9, window2=26).shift(26)
@@ -168,7 +184,17 @@ class StratIchimoku003(IStrategy):
 
         dataframe.loc[
             (   
-                (dataframe['BTC_ICH_CS_1H'] > dataframe['BTC_ICH_CS_HIGH_1H'])
+                (dataframe['BTC_ICH_CS_15M'] > dataframe['BTC_ICH_CS_HIGH_15M'])
+                & (dataframe['BTC_ICH_CS_15M'] > dataframe['BTC_ICH_CS_KS_15M'])
+                & (dataframe['BTC_ICH_CS_15M'] > dataframe['BTC_ICH_CS_TS_15M'])
+                & (dataframe['BTC_ICH_CS_15M'] > dataframe['BTC_ICH_CS_SSA_15M'])
+                & (dataframe['BTC_ICH_CS_15M'] > dataframe['BTC_ICH_CS_SSB_15M'])
+                & (dataframe['close_15m'] > dataframe['open_15m'])
+                & (dataframe['close_15m'] > dataframe['BTC_ICH_CS_SSA_15M'])
+                & (dataframe['close_15m'] > dataframe['BTC_ICH_CS_SSB_15M'])
+                & (dataframe['close_15m'] > dataframe['BTC_ICH_CS_KS_15M'])
+                & (dataframe['close_15m'] > dataframe['BTC_ICH_CS_TS_15M'])
+                & (dataframe['BTC_ICH_CS_1H'] > dataframe['BTC_ICH_CS_HIGH_1H'])
                 & (dataframe['BTC_ICH_CS_1H'] > dataframe['BTC_ICH_CS_KS_1H'])
                 & (dataframe['BTC_ICH_CS_1H'] > dataframe['BTC_ICH_CS_TS_1H'])
                 & (dataframe['BTC_ICH_CS_1H'] > dataframe['BTC_ICH_CS_SSA_1H'])
