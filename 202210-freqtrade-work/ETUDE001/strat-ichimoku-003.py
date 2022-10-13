@@ -51,7 +51,7 @@ class StratIchimoku003(IStrategy):
     minimal_roi = {
         #"60": 0.01,
         #"30": 0.01,
-        "0": 0.02
+        "0": 0.25
     }
 
     # Optimal stoploss designed for the strategy.
@@ -108,10 +108,6 @@ class StratIchimoku003(IStrategy):
 
         global informative1H
         global informative4H
-
-        #if not self.dp:
-            # Don't do anything if DataProvider is not available.
-            #return dataframe
 
         inf_tf = '1h'
         informative1H = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
@@ -173,31 +169,32 @@ class StratIchimoku003(IStrategy):
 
         dataframe.loc[
             (   
+                #Conditions for the current asset being calculated in the strategy's timeframe
                 (dataframe['ICH_CS'] > dataframe['ICH_CS_HIGH'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_KS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSB'])
-
+                #Conditions for the bitcoin in 1h
                 & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_HIGH_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_KS_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_TS_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_SSA_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_SSB_1H'])
+                #Conditions for the bitcoin in 4h
+                #& (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_HIGH_4H'])
+                #& (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_KS_4H'])
+                #& (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_TS_4H'])
+                #& (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_SSA_4H'])
+                #& (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_SSB_4H'])
 
-                & (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_HIGH_4H'])
-                & (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_KS_4H'])
-                & (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_TS_4H'])
-                & (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_SSA_4H'])
-                & (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_SSB_4H'])
-
-                & (
-                    (informative4H['BTC_ICH_SSB_4H'] > informative4H['BTC_ICH_SSA_4H'])
-                    & (informative4H['open'] < informative4H['BTC_ICH_SSB_4H'])
-                    & (informative4H['close'] > informative4H['BTC_ICH_SSB_4H'])
-                    & (informative4H['close'] > informative4H['BTC_ICH_KS_4H'])
-                    & (informative4H['close'] > informative4H['BTC_ICH_TS_4H'])
-                )
+                #& (
+                #    (informative4H['BTC_ICH_SSB_4H'] > informative4H['BTC_ICH_SSA_4H'])
+                #    #& (informative4H['open'] < informative4H['BTC_ICH_SSB_4H'])
+                #    #& (informative4H['close'] > informative4H['BTC_ICH_SSB_4H'])
+                #    & (informative4H['close'] > informative4H['BTC_ICH_KS_4H'])
+                #    & (informative4H['close'] > informative4H['BTC_ICH_TS_4H'])
+                #)
 
             ),
             'enter_long'] = 1
@@ -209,32 +206,26 @@ class StratIchimoku003(IStrategy):
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSB'])
-                & (
-                    (dataframe['ICH_SSB'] < dataframe['ICH_SSA'])
-                    & (dataframe['open'] > dataframe['ICH_SSB'])
-                    & (dataframe['close'] < dataframe['ICH_SSB'])
-                    & (dataframe['close'] < dataframe['ICH_KS'])
-                    & (dataframe['close'] < dataframe['ICH_TS'])
-                )
+
                 & (informative1H['BTC_ICH_CS_1H'] < informative1H['BTC_ICH_CS_LOW_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] < informative1H['BTC_ICH_CS_KS_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] < informative1H['BTC_ICH_CS_TS_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] < informative1H['BTC_ICH_CS_SSA_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] < informative1H['BTC_ICH_CS_SSB_1H'])
 
-                & (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_LOW_4H'])
-                & (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_KS_4H'])
-                & (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_TS_4H'])
-                & (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_SSA_4H'])
-                & (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_SSB_4H'])
+                #& (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_LOW_4H'])
+                #& (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_KS_4H'])
+                #& (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_TS_4H'])
+                #& (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_SSA_4H'])
+                #& (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_SSB_4H'])
 
-                & (
-                    (informative4H['BTC_ICH_SSB_4H'] < informative4H['BTC_ICH_SSA_4H'])
-                    & (informative4H['open'] > informative4H['BTC_ICH_SSB_4H'])
-                    & (informative4H['close'] < informative4H['BTC_ICH_SSB_4H'])
-                    & (informative4H['close'] < informative4H['BTC_ICH_KS_4H'])
-                    & (informative4H['close'] < informative4H['BTC_ICH_TS_4H'])
-                )
+                #& (
+                #    (informative4H['BTC_ICH_SSB_4H'] < informative4H['BTC_ICH_SSA_4H'])
+                #    #& (informative4H['open'] > informative4H['BTC_ICH_SSB_4H'])
+                #    #& (informative4H['close'] < informative4H['BTC_ICH_SSB_4H'])
+                #    & (informative4H['close'] < informative4H['BTC_ICH_KS_4H'])
+                #    & (informative4H['close'] < informative4H['BTC_ICH_TS_4H'])
+                #)
 
             ),
             'enter_short'] = 1
