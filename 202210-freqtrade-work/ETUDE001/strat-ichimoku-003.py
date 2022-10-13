@@ -65,7 +65,7 @@ class StratIchimoku003(IStrategy):
     # trailing_stop_positive_offset = 0.0  # Disabled / not configured
 
     # Optimal timeframe for the strategy.
-    timeframe = '5m'
+    timeframe = '15m'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = True
@@ -101,7 +101,11 @@ class StratIchimoku003(IStrategy):
         informative_pairs = [("BTC/USDT:USDT", "1h"), ("BTC/USDT:USDT", "4h"),]
         return informative_pairs
 
+    informative : DataFrame
+
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+
+        global informative
 
         #if not self.dp:
             # Don't do anything if DataProvider is not available.
@@ -111,7 +115,7 @@ class StratIchimoku003(IStrategy):
         # Get the informative pair
         informative = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
         #dataframe = merge_informative_pair(dataframe, informative, self.timeframe, inf_tf, ffill=False)
-        log_to_results(informative.to_string())
+        #log_to_results(informative.to_string())
 
         #Ichimoku calculations for the BTC in 1h
         informative['BTC_ICH_SSB_1H'] = taichi.trend.ichimoku_b(informative['high'], informative['low'], window2=26, window3=52).shift(26)
@@ -148,6 +152,9 @@ class StratIchimoku003(IStrategy):
     
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
+        global informative
+        log_to_results(informative.to_string())
+
         #if 'ETH/USDT' in str(metadata):
         #    log_to_results(dataframe.to_string())
 
@@ -158,27 +165,33 @@ class StratIchimoku003(IStrategy):
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSB'])
-                #& (
-                #    (dataframe['ICH_SSB'] > dataframe['ICH_SSA'])
-                #    & (dataframe['open'] < dataframe['ICH_SSB'])
-                #    & (dataframe['close'] > dataframe['ICH_SSB'])
-                #    & (dataframe['close'] > dataframe['ICH_KS'])
-                #)
+                & (
+                    (dataframe['ICH_SSB'] > dataframe['ICH_SSA'])
+                    & (dataframe['open'] < dataframe['ICH_SSB'])
+                    & (dataframe['close'] > dataframe['ICH_SSB'])
+                    & (dataframe['close'] > dataframe['ICH_KS'])
+                )
+                & (informative['BTC_ICH_CS_1H'] > informative['BTC_ICH_CS_HIGH_1H'])
+                & (informative['BTC_ICH_CS_1H'] > informative['BTC_ICH_CS_KS_1H'])
+                & (informative['BTC_ICH_CS_1H'] > informative['BTC_ICH_CS_TS_1H'])
+                & (informative['BTC_ICH_CS_1H'] > informative['BTC_ICH_CS_SSA_1H'])
+                & (informative['BTC_ICH_CS_1H'] > informative['BTC_ICH_CS_SSB_1H'])
             ),
             'enter_long'] = 1
 
         dataframe.loc[
             (   
-                (dataframe['ICH_CS'] < dataframe['ICH_CS_LOW'])
+                (dataframe['ICH_CS'] < dataframe['ICH_CS_LOW']) 
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_KS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSB'])
-                #& (
-                #    (dataframe['ICH_SSA'] > dataframe['ICH_SSB'])
-                #    & (dataframe['open'] > dataframe['ICH_SSB'])
-                #    & (dataframe['close'] < dataframe['ICH_SSB'])
-                #)
+                & (
+                    (dataframe['ICH_SSA'] > dataframe['ICH_SSB'])
+                    & (dataframe['open'] > dataframe['ICH_SSB'])
+                    & (dataframe['close'] < dataframe['ICH_SSB'])
+                )
+                & (informative['BTC_ICH_CS_1H'] < informative['BTC_ICH_CS_LOW_1H'])
             ),
             'enter_short'] = 1
 
