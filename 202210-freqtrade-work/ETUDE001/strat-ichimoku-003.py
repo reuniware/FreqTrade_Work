@@ -219,7 +219,7 @@ class StratIchimoku003(IStrategy):
                 & (dataframe['close_15m'] < dataframe['BTC_ICH_CS_SSB_15M'])
                 & (dataframe['close_15m'] < dataframe['BTC_ICH_CS_KS_15M'])
                 & (dataframe['close_15m'] < dataframe['BTC_ICH_CS_TS_15M'])
-                & (dataframe['BTC_ICH_CS_1H'] < dataframe['BTC_ICH_CS_HIGH_1H'])
+                & (dataframe['BTC_ICH_CS_1H'] < dataframe['BTC_ICH_CS_LOW_1H'])
                 & (dataframe['BTC_ICH_CS_1H'] < dataframe['BTC_ICH_CS_KS_1H'])
                 & (dataframe['BTC_ICH_CS_1H'] < dataframe['BTC_ICH_CS_TS_1H'])
                 & (dataframe['BTC_ICH_CS_1H'] < dataframe['BTC_ICH_CS_SSA_1H'])
