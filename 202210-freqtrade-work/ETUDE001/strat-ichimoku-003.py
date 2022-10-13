@@ -170,6 +170,7 @@ class StratIchimoku003(IStrategy):
                     & (dataframe['open'] < dataframe['ICH_SSB'])
                     & (dataframe['close'] > dataframe['ICH_SSB'])
                     & (dataframe['close'] > dataframe['ICH_KS'])
+                    & (dataframe['close'] > dataframe['ICH_TS'])
                 )
                 & (informative['BTC_ICH_CS_1H'] > informative['BTC_ICH_CS_HIGH_1H'])
                 & (informative['BTC_ICH_CS_1H'] > informative['BTC_ICH_CS_KS_1H'])
@@ -181,17 +182,23 @@ class StratIchimoku003(IStrategy):
 
         dataframe.loc[
             (   
-                (dataframe['ICH_CS'] < dataframe['ICH_CS_LOW']) 
+                (dataframe['ICH_CS'] < dataframe['ICH_CS_LOW'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_KS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSB'])
                 & (
-                    (dataframe['ICH_SSA'] > dataframe['ICH_SSB'])
+                    (dataframe['ICH_SSB'] < dataframe['ICH_SSA'])
                     & (dataframe['open'] > dataframe['ICH_SSB'])
                     & (dataframe['close'] < dataframe['ICH_SSB'])
+                    & (dataframe['close'] < dataframe['ICH_KS'])
+                    & (dataframe['close'] < dataframe['ICH_TS'])
                 )
                 & (informative['BTC_ICH_CS_1H'] < informative['BTC_ICH_CS_LOW_1H'])
+                & (informative['BTC_ICH_CS_1H'] < informative['BTC_ICH_CS_KS_1H'])
+                & (informative['BTC_ICH_CS_1H'] < informative['BTC_ICH_CS_TS_1H'])
+                & (informative['BTC_ICH_CS_1H'] < informative['BTC_ICH_CS_SSA_1H'])
+                & (informative['BTC_ICH_CS_1H'] < informative['BTC_ICH_CS_SSB_1H'])
             ),
             'enter_short'] = 1
 
