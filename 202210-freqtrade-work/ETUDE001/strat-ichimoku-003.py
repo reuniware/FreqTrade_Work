@@ -51,12 +51,12 @@ class StratIchimoku003(IStrategy):
     minimal_roi = {
         #"60": 0.01,
         #"30": 0.01,
-        "0": 0.005
+        "0": 0.02
     }
 
     # Optimal stoploss designed for the strategy.
     # This attribute will be overridden if the config file contains "stoploss".
-    stoploss = -0.01
+    stoploss = -0.25
 
     # Trailing stoploss
     trailing_stop = False
@@ -144,6 +144,9 @@ class StratIchimoku003(IStrategy):
         informative4H['BTC_ICH_CS_SSA_4H'] = informative4H['BTC_ICH_SSA_4H'].shift(26)
         informative4H['BTC_ICH_CS_SSB_4H'] = informative4H['BTC_ICH_SSB_4H'].shift(26)
 
+        log_to_results(informative4H.to_string())
+
+
         #Ichimoku calculations for the strategy's timeframe
         dataframe['ICH_SSB'] = taichi.trend.ichimoku_b(dataframe['high'], dataframe['low'], window2=26, window3=52).shift(26)
         dataframe['ICH_SSA'] = taichi.trend.ichimoku_a(dataframe['high'], dataframe['low'], window1=9, window2=26).shift(26)
@@ -176,13 +179,7 @@ class StratIchimoku003(IStrategy):
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSB'])
-                & (
-                    (dataframe['ICH_SSB'] > dataframe['ICH_SSA'])
-                    & (dataframe['open'] < dataframe['ICH_SSB'])
-                    & (dataframe['close'] > dataframe['ICH_SSB'])
-                    & (dataframe['close'] > dataframe['ICH_KS'])
-                    & (dataframe['close'] > dataframe['ICH_TS'])
-                )
+
                 & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_HIGH_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_KS_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_TS_1H'])
@@ -194,6 +191,15 @@ class StratIchimoku003(IStrategy):
                 & (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_TS_4H'])
                 & (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_SSA_4H'])
                 & (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_SSB_4H'])
+
+                & (
+                    (informative4H['BTC_ICH_SSB_4H'] > informative4H['BTC_ICH_SSA_4H'])
+                    & (informative4H['open'] < informative4H['BTC_ICH_SSB_4H'])
+                    & (informative4H['close'] > informative4H['BTC_ICH_SSB_4H'])
+                    & (informative4H['close'] > informative4H['BTC_ICH_KS_4H'])
+                    & (informative4H['close'] > informative4H['BTC_ICH_TS_4H'])
+                )
+
             ),
             'enter_long'] = 1
 
@@ -222,6 +228,15 @@ class StratIchimoku003(IStrategy):
                 & (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_TS_4H'])
                 & (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_SSA_4H'])
                 & (informative4H['BTC_ICH_CS_4H'] < informative4H['BTC_ICH_CS_SSB_4H'])
+
+                & (
+                    (informative4H['BTC_ICH_SSB_4H'] < informative4H['BTC_ICH_SSA_4H'])
+                    & (informative4H['open'] > informative4H['BTC_ICH_SSB_4H'])
+                    & (informative4H['close'] < informative4H['BTC_ICH_SSB_4H'])
+                    & (informative4H['close'] < informative4H['BTC_ICH_KS_4H'])
+                    & (informative4H['close'] < informative4H['BTC_ICH_TS_4H'])
+                )
+
             ),
             'enter_short'] = 1
 
