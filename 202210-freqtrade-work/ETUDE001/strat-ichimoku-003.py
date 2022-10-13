@@ -76,7 +76,7 @@ class StratIchimoku003(IStrategy):
     ignore_roi_if_entry_signal = False
 
     # Number of candles the strategy requires before producing valid signals
-    startup_candle_count: int = 100
+    startup_candle_count: int = 15 * 4 * 26
 
     # Optional order type mapping.
     order_types = {
@@ -153,7 +153,7 @@ class StratIchimoku003(IStrategy):
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
         global informative
-        log_to_results(informative.to_string())
+        #log_to_results(informative.to_string())
 
         #if 'ETH/USDT' in str(metadata):
         #    log_to_results(dataframe.to_string())
