@@ -144,8 +144,7 @@ class StratIchimoku003(IStrategy):
         informative4H['BTC_ICH_CS_SSA_4H'] = informative4H['BTC_ICH_SSA_4H'].shift(26)
         informative4H['BTC_ICH_CS_SSB_4H'] = informative4H['BTC_ICH_SSB_4H'].shift(26)
 
-        log_to_results(informative4H.to_string())
-
+        #log_to_results(informative4H.to_string())
 
         #Ichimoku calculations for the strategy's timeframe
         dataframe['ICH_SSB'] = taichi.trend.ichimoku_b(dataframe['high'], dataframe['low'], window2=26, window3=52).shift(26)
