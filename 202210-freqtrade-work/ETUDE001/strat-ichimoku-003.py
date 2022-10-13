@@ -98,21 +98,38 @@ class StratIchimoku003(IStrategy):
         # Assign tf to each pair so they can be downloaded and cached for strategy.
         #informative_pairs = [(pair, '1h') for pair in pairs]
         # Optionally Add additional "static" pairs
-        informative_pairs = [("BTC/USDT:USDT", "1h"), ("BTC/USDT:USDT", "4h"),]
+        informative_pairs = [("BTC/USDT:USDT", "30m"), ("BTC/USDT:USDT", "1h"), ("BTC/USDT:USDT", "4h"),]
         return informative_pairs
 
+    informative30M : DataFrame
     informative1H : DataFrame
     informative4H : DataFrame
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
+        global informative30M
         global informative1H
         global informative4H
 
+        inf_tf = '30m'
+        informative30M = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
         inf_tf = '1h'
         informative1H = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
         inf_tf = '4h'
         informative4H = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
+
+        #Ichimoku calculations for the BTC in 30m
+        informative30M['BTC_ICH_SSB_30M'] = taichi.trend.ichimoku_b(informative30M['high'], informative30M['low'], window2=26, window3=52).shift(26)
+        informative30M['BTC_ICH_SSA_30M'] = taichi.trend.ichimoku_a(informative30M['high'], informative30M['low'], window1=9, window2=26).shift(26)
+        informative30M['BTC_ICH_KS_30M'] = taichi.trend.ichimoku_base_line(informative30M['high'], informative30M['low'])
+        informative30M['BTC_ICH_TS_30M'] = taichi.trend.ichimoku_conversion_line(informative30M['high'], informative30M['low'])
+        informative30M['BTC_ICH_CS_30M'] = informative30M['close']
+        informative30M['BTC_ICH_CS_HIGH_30M'] = informative30M['high'].shift(26)
+        informative30M['BTC_ICH_CS_LOW_30M'] = informative30M['low'].shift(26)
+        informative30M['BTC_ICH_CS_KS_30M'] = informative30M['BTC_ICH_KS_30M'].shift(26)
+        informative30M['BTC_ICH_CS_TS_30M'] = informative30M['BTC_ICH_TS_30M'].shift(26)
+        informative30M['BTC_ICH_CS_SSA_30M'] = informative30M['BTC_ICH_SSA_30M'].shift(26)
+        informative30M['BTC_ICH_CS_SSB_30M'] = informative30M['BTC_ICH_SSB_30M'].shift(26)
 
         #Ichimoku calculations for the BTC in 1h
         informative1H['BTC_ICH_SSB_1H'] = taichi.trend.ichimoku_b(informative1H['high'], informative1H['low'], window2=26, window3=52).shift(26)
@@ -175,12 +192,14 @@ class StratIchimoku003(IStrategy):
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSB'])
-                #Conditions for the bitcoin in 1h
-                & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_HIGH_1H'])
-                & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_KS_1H'])
-                & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_TS_1H'])
-                & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_SSA_1H'])
-                & (informative1H['BTC_ICH_CS_1H'] > informative1H['BTC_ICH_CS_SSB_1H'])
+
+                #Conditions for the bitcoin in 30m
+                & (informative30M['BTC_ICH_CS_30M'] > informative30M['BTC_ICH_CS_HIGH_30M'])
+                & (informative30M['BTC_ICH_CS_30M'] > informative30M['BTC_ICH_CS_KS_30M'])
+                & (informative30M['BTC_ICH_CS_30M'] > informative30M['BTC_ICH_CS_TS_30M'])
+                & (informative30M['BTC_ICH_CS_30M'] > informative30M['BTC_ICH_CS_SSA_30M'])
+                & (informative30M['BTC_ICH_CS_30M'] > informative30M['BTC_ICH_CS_SSB_30M'])
+                
                 #Conditions for the bitcoin in 4h
                 #& (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_HIGH_4H'])
                 #& (informative4H['BTC_ICH_CS_4H'] > informative4H['BTC_ICH_CS_KS_4H'])
@@ -206,6 +225,13 @@ class StratIchimoku003(IStrategy):
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSB'])
+
+                #Conditions for the bitcoin in 30m
+                & (informative30M['BTC_ICH_CS_30M'] < informative30M['BTC_ICH_CS_LOW_30M'])
+                & (informative30M['BTC_ICH_CS_30M'] < informative30M['BTC_ICH_CS_KS_30M'])
+                & (informative30M['BTC_ICH_CS_30M'] < informative30M['BTC_ICH_CS_TS_30M'])
+                & (informative30M['BTC_ICH_CS_30M'] < informative30M['BTC_ICH_CS_SSA_30M'])
+                & (informative30M['BTC_ICH_CS_30M'] < informative30M['BTC_ICH_CS_SSB_30M'])
 
                 & (informative1H['BTC_ICH_CS_1H'] < informative1H['BTC_ICH_CS_LOW_1H'])
                 & (informative1H['BTC_ICH_CS_1H'] < informative1H['BTC_ICH_CS_KS_1H'])
