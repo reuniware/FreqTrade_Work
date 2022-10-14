@@ -96,6 +96,7 @@ class StratIchimoku005(IStrategy):
         # get access to all pairs available in whitelist.
         pairs = self.dp.current_whitelist()
         # Assign tf to each pair so they can be downloaded and cached for strategy.
+        informative_pairs = [(pair, '15m') for pair in pairs]
         informative_pairs = [(pair, '30m') for pair in pairs]
         informative_pairs += [(pair, '1h') for pair in pairs]
         informative_pairs += [(pair, '4h') for pair in pairs]
@@ -106,6 +107,7 @@ class StratIchimoku005(IStrategy):
     informativeBTC30M : DataFrame
     informativeBTC1H : DataFrame
     informativeBTC4H : DataFrame
+    informative15M : DataFrame
     informative30M : DataFrame
     informative1H : DataFrame
     informative4H : DataFrame
@@ -115,6 +117,7 @@ class StratIchimoku005(IStrategy):
         global informativeBTC30M
         global informativeBTC1H
         global informativeBTC4H
+        global informative15M
         global informative30M
         global informative1H
         global informative4H
@@ -128,6 +131,8 @@ class StratIchimoku005(IStrategy):
         informativeBTC1H = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
         inf_tf = '4h'
         informativeBTC4H = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
+        inf_tf = '15m'
+        informative15M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
         inf_tf = '30m'
         informative30M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
         inf_tf = '1h'
@@ -175,6 +180,19 @@ class StratIchimoku005(IStrategy):
         informativeBTC4H['BTC_ICH_CS_TS_4H'] = informativeBTC4H['BTC_ICH_TS_4H'].shift(26)
         informativeBTC4H['BTC_ICH_CS_SSA_4H'] = informativeBTC4H['BTC_ICH_SSA_4H'].shift(26)
         informativeBTC4H['BTC_ICH_CS_SSB_4H'] = informativeBTC4H['BTC_ICH_SSB_4H'].shift(26)
+
+        #Ichimoku calculations for the current pair in 15m
+        informative15M['ICH_SSB_15M'] = taichi.trend.ichimoku_b(informative15M['high'], informative15M['low'], window2=26, window3=52).shift(26)
+        informative15M['ICH_SSA_15M'] = taichi.trend.ichimoku_a(informative15M['high'], informative15M['low'], window1=9, window2=26).shift(26)
+        informative15M['ICH_KS_15M'] = taichi.trend.ichimoku_base_line(informative15M['high'], informative15M['low'])
+        informative15M['ICH_TS_15M'] = taichi.trend.ichimoku_conversion_line(informative15M['high'], informative15M['low'])
+        informative15M['ICH_CS_15M'] = informative15M['close']
+        informative15M['ICH_CS_HIGH_15M'] = informative15M['high'].shift(26)
+        informative15M['ICH_CS_LOW_15M'] = informative15M['low'].shift(26)
+        informative15M['ICH_CS_KS_15M'] = informative15M['ICH_KS_15M'].shift(26)
+        informative15M['ICH_CS_TS_15M'] = informative15M['ICH_TS_15M'].shift(26)
+        informative15M['ICH_CS_SSA_15M'] = informative15M['ICH_SSA_15M'].shift(26)
+        informative15M['ICH_CS_SSB_15M'] = informative15M['ICH_SSB_15M'].shift(26)
 
         #Ichimoku calculations for the current pair in 30m
         informative30M['ICH_SSB_30M'] = taichi.trend.ichimoku_b(informative30M['high'], informative30M['low'], window2=26, window3=52).shift(26)
@@ -240,6 +258,7 @@ class StratIchimoku005(IStrategy):
         global informativeBTC30M
         global informativeBTC1H
         global informativeBTC4H
+        global informative15M
         global informative30M
         global informative1H
         global informative4H
