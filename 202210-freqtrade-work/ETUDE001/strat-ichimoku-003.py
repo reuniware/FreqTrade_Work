@@ -280,6 +280,7 @@ class StratIchimoku003(IStrategy):
 
 # How to use this strategy ?
 # This strategy is a semi-automated one that needs human intervention to close the trades.
+# 0- In you config.json file, set max_open_trades to 20 (10 is ok too)
 # 1- Have a BTC/USDT chart in H4 timeframe on your screen
 # 2- Wait for a 4H green candlestick (in formation) on BTC/USDT
 # 3- When a 4H green candlestick is forming, start this bot
