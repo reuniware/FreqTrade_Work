@@ -51,12 +51,12 @@ class StratIchimoku005(IStrategy):
     minimal_roi = {
         #"60": 0.01,
         #"30": 0.01,
-        "0": 0.02
+        "0": 0.25
     }
 
     # Optimal stoploss designed for the strategy.
     # This attribute will be overridden if the config file contains "stoploss".
-    stoploss = -0.04
+    stoploss = -0.25
 
     # Trailing stoploss
     trailing_stop = False
@@ -409,18 +409,26 @@ class StratIchimoku005(IStrategy):
         global informative1H
         global informative4H
 
-        #dataframe.loc[
-        #    (
-        #        (dataframe['close'] >= dataframe['ICH_KS'])
-        #        | (dataframe['close'] <= dataframe['ICH_SSB'])
-        #    ),
-        #    'exit_long'] = 1
-        #
-        #dataframe.loc[
-        #    (
-        #        (dataframe['close'] <= dataframe['ICH_KS'])
-        #        | (dataframe['close'] >= dataframe['ICH_SSB'])
-        #    ),
-        #    'exit_short'] = 1
+        """
+        dataframe.loc[
+            (
+                #(dataframe['close'] < dataframe['open'])
+                #(dataframe['close'] < dataframe['ICH_SSA'])
+                #| (dataframe['close'] < dataframe['ICH_SSB'])
+                (dataframe['close'] < dataframe['ICH_KS'])
+                #| (dataframe['close'] < dataframe['ICH_TS'])
+            ),
+            'exit_long'] = 1
+
+        dataframe.loc[
+            (
+                #(dataframe['close'] > dataframe['open'])
+                #(dataframe['close'] > dataframe['ICH_SSA'])
+                #| (dataframe['close'] > dataframe['ICH_SSB'])
+                (dataframe['close'] > dataframe['ICH_KS'])
+                #| (dataframe['close'] > dataframe['ICH_TS'])
+            ),
+            'exit_short'] = 1
+        """
 
         return dataframe
