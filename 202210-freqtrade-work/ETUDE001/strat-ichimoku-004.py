@@ -257,25 +257,37 @@ class StratIchimoku004(IStrategy):
                 & (dataframe['open'] > dataframe['ICH_KS'])
                 & (dataframe['open'] > dataframe['ICH_TS'])
 
-                &(dataframe['ICH_CS'] > dataframe['ICH_CS_HIGH'])
+                & (dataframe['ICH_CS'] > dataframe['ICH_CS_HIGH'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_KS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSB'])
 
+                & (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_HIGH_30M'])
+                & (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_KS_30M'])
+                & (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_TS_30M'])
+                & (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_SSA_30M'])
+                & (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_SSB_30M'])
+
+                & (informative1H['ICH_CS_1H'] > informative1H['ICH_CS_HIGH_1H'])
+                & (informative1H['ICH_CS_1H'] > informative1H['ICH_CS_KS_1H'])
+                & (informative1H['ICH_CS_1H'] > informative1H['ICH_CS_TS_1H'])
+                & (informative1H['ICH_CS_1H'] > informative1H['ICH_CS_SSA_1H'])
+                & (informative1H['ICH_CS_1H'] > informative1H['ICH_CS_SSB_1H'])
+
                 #Conditions for the bitcoin in 30m
-                & (informativeBTC30M['BTC_ICH_CS_30M'] > informativeBTC30M['BTC_ICH_CS_HIGH_30M'])
-                & (informativeBTC30M['BTC_ICH_CS_30M'] > informativeBTC30M['BTC_ICH_CS_KS_30M'])
-                & (informativeBTC30M['BTC_ICH_CS_30M'] > informativeBTC30M['BTC_ICH_CS_TS_30M'])
-                & (informativeBTC30M['BTC_ICH_CS_30M'] > informativeBTC30M['BTC_ICH_CS_SSA_30M'])
-                & (informativeBTC30M['BTC_ICH_CS_30M'] > informativeBTC30M['BTC_ICH_CS_SSB_30M'])
+                #& (informativeBTC30M['BTC_ICH_CS_30M'] > informativeBTC30M['BTC_ICH_CS_HIGH_30M'])
+                #& (informativeBTC30M['BTC_ICH_CS_30M'] > informativeBTC30M['BTC_ICH_CS_KS_30M'])
+                #& (informativeBTC30M['BTC_ICH_CS_30M'] > informativeBTC30M['BTC_ICH_CS_TS_30M'])
+                #& (informativeBTC30M['BTC_ICH_CS_30M'] > informativeBTC30M['BTC_ICH_CS_SSA_30M'])
+                #& (informativeBTC30M['BTC_ICH_CS_30M'] > informativeBTC30M['BTC_ICH_CS_SSB_30M'])
 
                 #Conditions for the bitcoin in 1h
-                & (informativeBTC1H['BTC_ICH_CS_1H'] > informativeBTC1H['BTC_ICH_CS_HIGH_1H'])
-                & (informativeBTC1H['BTC_ICH_CS_1H'] > informativeBTC1H['BTC_ICH_CS_KS_1H'])
-                & (informativeBTC1H['BTC_ICH_CS_1H'] > informativeBTC1H['BTC_ICH_CS_TS_1H'])
-                & (informativeBTC1H['BTC_ICH_CS_1H'] > informativeBTC1H['BTC_ICH_CS_SSA_1H'])
-                & (informativeBTC1H['BTC_ICH_CS_1H'] > informativeBTC1H['BTC_ICH_CS_SSB_1H'])
+                #& (informativeBTC1H['BTC_ICH_CS_1H'] > informativeBTC1H['BTC_ICH_CS_HIGH_1H'])
+                #& (informativeBTC1H['BTC_ICH_CS_1H'] > informativeBTC1H['BTC_ICH_CS_KS_1H'])
+                #& (informativeBTC1H['BTC_ICH_CS_1H'] > informativeBTC1H['BTC_ICH_CS_TS_1H'])
+                #& (informativeBTC1H['BTC_ICH_CS_1H'] > informativeBTC1H['BTC_ICH_CS_SSA_1H'])
+                #& (informativeBTC1H['BTC_ICH_CS_1H'] > informativeBTC1H['BTC_ICH_CS_SSB_1H'])
 
                 #Conditions for the bitcoin in 4h
                 #& (informativeBTC4H['BTC_ICH_CS_4H'] > informativeBTC4H['BTC_ICH_CS_HIGH_4H'])
@@ -307,24 +319,36 @@ class StratIchimoku004(IStrategy):
                 & (dataframe['open'] < dataframe['ICH_KS'])
                 & (dataframe['open'] < dataframe['ICH_TS'])
 
-                &(dataframe['ICH_CS'] < dataframe['ICH_CS_LOW'])
+                & (dataframe['ICH_CS'] < dataframe['ICH_CS_LOW'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_KS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSA'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSB'])
 
-                #Conditions for the bitcoin in 30m
-                & (informativeBTC30M['BTC_ICH_CS_30M'] < informativeBTC30M['BTC_ICH_CS_LOW_30M'])
-                & (informativeBTC30M['BTC_ICH_CS_30M'] < informativeBTC30M['BTC_ICH_CS_KS_30M'])
-                & (informativeBTC30M['BTC_ICH_CS_30M'] < informativeBTC30M['BTC_ICH_CS_TS_30M'])
-                & (informativeBTC30M['BTC_ICH_CS_30M'] < informativeBTC30M['BTC_ICH_CS_SSA_30M'])
-                & (informativeBTC30M['BTC_ICH_CS_30M'] < informativeBTC30M['BTC_ICH_CS_SSB_30M'])
+                & (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_LOW_30M'])
+                & (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_KS_30M'])
+                & (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_TS_30M'])
+                & (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_SSA_30M'])
+                & (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_SSB_30M'])
 
-                & (informativeBTC1H['BTC_ICH_CS_1H'] < informativeBTC1H['BTC_ICH_CS_LOW_1H'])
-                & (informativeBTC1H['BTC_ICH_CS_1H'] < informativeBTC1H['BTC_ICH_CS_KS_1H'])
-                & (informativeBTC1H['BTC_ICH_CS_1H'] < informativeBTC1H['BTC_ICH_CS_TS_1H'])
-                & (informativeBTC1H['BTC_ICH_CS_1H'] < informativeBTC1H['BTC_ICH_CS_SSA_1H'])
-                & (informativeBTC1H['BTC_ICH_CS_1H'] < informativeBTC1H['BTC_ICH_CS_SSB_1H'])
+                & (informative1H['ICH_CS_1H'] < informative1H['ICH_CS_LOW_1H'])
+                & (informative1H['ICH_CS_1H'] < informative1H['ICH_CS_KS_1H'])
+                & (informative1H['ICH_CS_1H'] < informative1H['ICH_CS_TS_1H'])
+                & (informative1H['ICH_CS_1H'] < informative1H['ICH_CS_SSA_1H'])
+                & (informative1H['ICH_CS_1H'] < informative1H['ICH_CS_SSB_1H'])
+
+                #Conditions for the bitcoin in 30m
+                #& (informativeBTC30M['BTC_ICH_CS_30M'] < informativeBTC30M['BTC_ICH_CS_LOW_30M'])
+                #& (informativeBTC30M['BTC_ICH_CS_30M'] < informativeBTC30M['BTC_ICH_CS_KS_30M'])
+                #& (informativeBTC30M['BTC_ICH_CS_30M'] < informativeBTC30M['BTC_ICH_CS_TS_30M'])
+                #& (informativeBTC30M['BTC_ICH_CS_30M'] < informativeBTC30M['BTC_ICH_CS_SSA_30M'])
+                #& (informativeBTC30M['BTC_ICH_CS_30M'] < informativeBTC30M['BTC_ICH_CS_SSB_30M'])
+
+                #& (informativeBTC1H['BTC_ICH_CS_1H'] < informativeBTC1H['BTC_ICH_CS_LOW_1H'])
+                #& (informativeBTC1H['BTC_ICH_CS_1H'] < informativeBTC1H['BTC_ICH_CS_KS_1H'])
+                #& (informativeBTC1H['BTC_ICH_CS_1H'] < informativeBTC1H['BTC_ICH_CS_TS_1H'])
+                #& (informativeBTC1H['BTC_ICH_CS_1H'] < informativeBTC1H['BTC_ICH_CS_SSA_1H'])
+                #& (informativeBTC1H['BTC_ICH_CS_1H'] < informativeBTC1H['BTC_ICH_CS_SSB_1H'])
 
                 #& (informativeBTC4H['BTC_ICH_CS_4H'] < informativeBTC4H['BTC_ICH_CS_LOW_4H'])
                 #& (informativeBTC4H['BTC_ICH_CS_4H'] < informativeBTC4H['BTC_ICH_CS_KS_4H'])
