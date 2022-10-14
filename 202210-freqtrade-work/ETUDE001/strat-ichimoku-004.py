@@ -98,6 +98,7 @@ class StratIchimoku004(IStrategy):
         # Assign tf to each pair so they can be downloaded and cached for strategy.
         informative_pairs = [(pair, '30m') for pair in pairs]
         informative_pairs += [(pair, '1h') for pair in pairs]
+        informative_pairs += [(pair, '4h') for pair in pairs]
         # Optionally Add additional "static" pairs
         informative_pairs += [("BTC/USDT:USDT", "30m"), ("BTC/USDT:USDT", "1h"), ("BTC/USDT:USDT", "4h"),]
         return informative_pairs
@@ -107,6 +108,7 @@ class StratIchimoku004(IStrategy):
     informativeBTC4H : DataFrame
     informative30M : DataFrame
     informative1H : DataFrame
+    informative4H : DataFrame
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
@@ -115,6 +117,7 @@ class StratIchimoku004(IStrategy):
         global informativeBTC4H
         global informative30M
         global informative1H
+        global informative4H
 
         #log_to_results(metadata['pair'])
         currentPair = str(metadata['pair'])        
@@ -129,6 +132,8 @@ class StratIchimoku004(IStrategy):
         informative30M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
         inf_tf = '1h'
         informative1H = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
+        inf_tf = '4h'
+        informative4H = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
 
         #log_to_results(currentPair + " : " + informative30M.to_string())
 
@@ -197,6 +202,19 @@ class StratIchimoku004(IStrategy):
         informative1H['ICH_CS_SSA_1H'] = informative1H['ICH_SSA_1H'].shift(26)
         informative1H['ICH_CS_SSB_1H'] = informative1H['ICH_SSB_1H'].shift(26)
 
+        #Ichimoku calculations for the current pair in 4h
+        informative4H['ICH_SSB_4H'] = taichi.trend.ichimoku_b(informative4H['high'], informative4H['low'], window2=26, window3=52).shift(26)
+        informative4H['ICH_SSA_4H'] = taichi.trend.ichimoku_a(informative4H['high'], informative4H['low'], window1=9, window2=26).shift(26)
+        informative4H['ICH_KS_4H'] = taichi.trend.ichimoku_base_line(informative4H['high'], informative4H['low'])
+        informative4H['ICH_TS_4H'] = taichi.trend.ichimoku_conversion_line(informative4H['high'], informative4H['low'])
+        informative4H['ICH_CS_4H'] = informative4H['close']
+        informative4H['ICH_CS_HIGH_4H'] = informative4H['high'].shift(26)
+        informative4H['ICH_CS_LOW_4H'] = informative4H['low'].shift(26)
+        informative4H['ICH_CS_KS_4H'] = informative4H['ICH_KS_4H'].shift(26)
+        informative4H['ICH_CS_TS_4H'] = informative4H['ICH_TS_4H'].shift(26)
+        informative4H['ICH_CS_SSA_4H'] = informative4H['ICH_SSA_4H'].shift(26)
+        informative4H['ICH_CS_SSB_4H'] = informative4H['ICH_SSB_4H'].shift(26)
+
         #Ichimoku calculations for the strategy's timeframe
         dataframe['ICH_SSB'] = taichi.trend.ichimoku_b(dataframe['high'], dataframe['low'], window2=26, window3=52).shift(26)
         dataframe['ICH_SSA'] = taichi.trend.ichimoku_a(dataframe['high'], dataframe['low'], window1=9, window2=26).shift(26)
@@ -222,6 +240,9 @@ class StratIchimoku004(IStrategy):
         global informativeBTC30M
         global informativeBTC1H
         global informativeBTC4H
+        global informative30M
+        global informative1H
+        global informative4H
 
         dataframe.loc[
             (   
@@ -229,13 +250,12 @@ class StratIchimoku004(IStrategy):
                 (dataframe['close'] > dataframe['open'])
                 & (dataframe['close'] > dataframe['ICH_SSA'])
                 & (dataframe['close'] > dataframe['ICH_SSB'])
+                & (dataframe['close'] > dataframe['ICH_KS'])
                 & (dataframe['close'] > dataframe['ICH_TS'])
                 & (dataframe['open'] > dataframe['ICH_SSA'])
                 & (dataframe['open'] > dataframe['ICH_SSB'])
+                & (dataframe['open'] > dataframe['ICH_KS'])
                 & (dataframe['open'] > dataframe['ICH_TS'])
-
-                & (dataframe['open'] < dataframe['ICH_KS'])
-                & (dataframe['close'] < dataframe['ICH_KS'])
 
                 &(dataframe['ICH_CS'] > dataframe['ICH_CS_HIGH'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_KS'])
@@ -280,13 +300,12 @@ class StratIchimoku004(IStrategy):
                 (dataframe['close'] < dataframe['open'])
                 & (dataframe['close'] < dataframe['ICH_SSA'])
                 & (dataframe['close'] < dataframe['ICH_SSB'])
+                & (dataframe['close'] < dataframe['ICH_KS'])
                 & (dataframe['close'] < dataframe['ICH_TS'])
                 & (dataframe['open'] < dataframe['ICH_SSA'])
                 & (dataframe['open'] < dataframe['ICH_SSB'])
+                & (dataframe['open'] < dataframe['ICH_KS'])
                 & (dataframe['open'] < dataframe['ICH_TS'])
-
-                & (dataframe['open'] > dataframe['ICH_KS'])
-                & (dataframe['close'] > dataframe['ICH_KS'])
 
                 &(dataframe['ICH_CS'] < dataframe['ICH_CS_LOW'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_KS'])
@@ -327,6 +346,14 @@ class StratIchimoku004(IStrategy):
         return dataframe
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+
+        global informativeBTC30M
+        global informativeBTC1H
+        global informativeBTC4H
+        global informative30M
+        global informative1H
+        global informative4H
+
         #dataframe.loc[
         #    (
         #        (dataframe['close'] >= dataframe['ICH_KS'])
