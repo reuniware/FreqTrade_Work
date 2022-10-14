@@ -181,6 +181,7 @@ class StratIchimoku003(IStrategy):
     
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
+        global informative30M
         global informative1H
         global informative4H
 
