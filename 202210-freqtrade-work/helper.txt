@@ -12,6 +12,7 @@ freqtrade download-data --days 365 --exchange gateio --config config-test.json -
 freqtrade download-data --days 10 --exchange gateio --config config-gateio-static.json -t 1m
 freqtrade download-data --days 10 --exchange gateio --config config-gateio-static.json -t 5m
 freqtrade download-data --days 10 --exchange gateio --config config-gateio-static.json -t 15m
+freqtrade download-data --days 10 --exchange gateio --config config-gateio-static.json -t 30m
 freqtrade download-data --days 10 --exchange gateio --config config-gateio-static.json -t 1h
 freqtrade download-data --days 10 --exchange gateio --config config-gateio-static.json -t 4h
 freqtrade download-data --days 10 --exchange gateio --config config-gateio-static.json -t 8h
@@ -25,6 +26,7 @@ freqtrade download-data --days 365 --exchange gateio --config config-gateio-stat
 freqtrade download-data --days 365 --exchange gateio --config config-gateio-static.json -t 8h
 freqtrade download-data --days 365 --exchange gateio --config config-gateio-static.json -t 4h
 freqtrade download-data --days 365 --exchange gateio --config config-gateio-static.json -t 1h
+freqtrade download-data --days 10 --exchange gateio --config config-gateio-static.json -t 30m
 freqtrade download-data --days 365 --exchange gateio --config config-gateio-static.json -t 15m
 freqtrade download-data --days 365 --exchange gateio --config config-gateio-static.json -t 5m
 freqtrade download-data --days 365 --exchange gateio --config config-gateio-static.json -t 1m
