@@ -277,3 +277,15 @@ class StratIchimoku003(IStrategy):
         #    'exit_short'] = 1
 
         return dataframe
+
+# How to use this strategy ?
+# This strategy is a semi-automated one that needs human intervention to close the trades.
+# 1- Have a BTC/USDT chart in H4 timeframe on your screen
+# 2- Wait for a 4H green candlestick (in formation) on BTC/USDT
+# 3- When a 4H green candlestick is forming, start this bot
+# 4- The bot will open Long and Short trades
+# 5- Wait some minutes or hours
+# 6- Close the trades (some in profits and some in loss)
+# 7- You should have made some profits at this point ;)
+# 8- Go to 1 and repeat.
+
