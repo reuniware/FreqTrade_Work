@@ -1,4 +1,4 @@
-(.env) gitpod /workspace/freqtrade (stable) $ freqtrade backtesting -c config-gateio-static.json -s StratIchimoku005 --timerange=20220101-20221014
+freqtrade backtesting -c config-gateio-static.json -s StratIchimoku005 --timerange=20220101-20221014
 
 2022-10-14 18:39:52,150 - freqtrade.optimize.backtesting - INFO - Reusing result of previous backtest for StratIchimoku005
 Result for strategy StratIchimoku005
