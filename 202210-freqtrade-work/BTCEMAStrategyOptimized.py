@@ -22,7 +22,7 @@ class BTCEMAStrategyOptimized(IStrategy):
     """
     This strategy has been found at : https://github.com/tjventurini/freqtrade/blob/7a8d95c875930605697e2eadefbd1ca6b1f46bcb/user_data/strategies/BTCEMAStrategyOptimized.py
     I find it interesting because it performs well on the timerange 20221001-20221016 where other fail
-    But it seems not ok ok 20220101-20221016
+    But it seems not ok on 20220101-20221016
     It seems to have been designed for trading /BTC pairs but I backtested it on /USDT pairs on GATEIO
     Config file used at https://github.com/reuniware/FreqTrade_Work/blob/main/202210-freqtrade-work/config-gateio-static.json
     """
