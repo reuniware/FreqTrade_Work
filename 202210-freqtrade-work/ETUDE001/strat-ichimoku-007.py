@@ -139,7 +139,7 @@ class StratIchimoku007(IStrategy):
         inf_tf = '4h'
         informativeBTC4H = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
         inf_tf = '5m'
-        informative15M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
+        informative5M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
         inf_tf = '15m'
         informative15M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
         inf_tf = '30m'
@@ -333,12 +333,12 @@ class StratIchimoku007(IStrategy):
                 & (informative15M['ICH_CS_15M'] > informative15M['ICH_CS_SSA_15M'])
                 & (informative15M['ICH_CS_15M'] > informative15M['ICH_CS_SSB_15M'])
 
-                & (informative30M['close'] > informative30M['open'])
-                & (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_HIGH_30M'])
-                & (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_KS_30M'])
-                & (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_TS_30M'])
-                & (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_SSA_30M'])
-                & (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_SSB_30M'])
+                #& (informative30M['close'] > informative30M['open'])
+                #& (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_HIGH_30M'])
+                #& (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_KS_30M'])
+                #& (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_TS_30M'])
+                #& (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_SSA_30M'])
+                #& (informative30M['ICH_CS_30M'] > informative30M['ICH_CS_SSB_30M'])
 
                 #& (informative1H['ICH_CS_1H'] > informative1H['ICH_CS_HIGH_1H'])
                 #& (informative1H['ICH_CS_1H'] > informative1H['ICH_CS_KS_1H'])
@@ -427,12 +427,12 @@ class StratIchimoku007(IStrategy):
                 & (informative15M['ICH_CS_15M'] < informative15M['ICH_CS_SSA_15M'])
                 & (informative15M['ICH_CS_15M'] < informative15M['ICH_CS_SSB_15M'])
 
-                & (informative30M['close'] < informative30M['open'])
-                & (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_LOW_30M'])
-                & (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_KS_30M'])
-                & (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_TS_30M'])
-                & (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_SSA_30M'])
-                & (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_SSB_30M'])
+                #& (informative30M['close'] < informative30M['open'])
+                #& (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_LOW_30M'])
+                #& (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_KS_30M'])
+                #& (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_TS_30M'])
+                #& (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_SSA_30M'])
+                #& (informative30M['ICH_CS_30M'] < informative30M['ICH_CS_SSB_30M'])
 
                 #& (informative1H['ICH_CS_1H'] < informative1H['ICH_CS_LOW_1H'])
                 #& (informative1H['ICH_CS_1H'] < informative1H['ICH_CS_KS_1H'])
