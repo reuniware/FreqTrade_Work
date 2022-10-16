@@ -105,11 +105,11 @@ class StratIchimoku007(IStrategy):
         informative_pairs += [("BTC/USDT:USDT", "15m"), ("BTC/USDT:USDT", "30m"), ("BTC/USDT:USDT", "1h"), ("BTC/USDT:USDT", "4h"),]
         return informative_pairs
 
-    informativeBTC5M : DataFrame
     informativeBTC15M : DataFrame
     informativeBTC30M : DataFrame
     informativeBTC1H : DataFrame
     informativeBTC4H : DataFrame
+    informative5M : DataFrame
     informative15M : DataFrame
     informative30M : DataFrame
     informative1H : DataFrame
@@ -290,11 +290,11 @@ class StratIchimoku007(IStrategy):
     
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        global informativeBTC5M
         global informativeBTC15M
         global informativeBTC30M
         global informativeBTC1H
         global informativeBTC4H
+        global informative5M
         global informative15M
         global informative30M
         global informative1H
@@ -491,11 +491,12 @@ class StratIchimoku007(IStrategy):
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        global informativeBTC5M
         global informativeBTC15M
         global informativeBTC30M
         global informativeBTC1H
         global informativeBTC4H
+        global informative5M
+        global informative15M
         global informative30M
         global informative1H
         global informative4H
