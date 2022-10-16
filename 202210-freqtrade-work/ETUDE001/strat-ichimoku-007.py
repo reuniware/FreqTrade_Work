@@ -491,6 +491,7 @@ class StratIchimoku007(IStrategy):
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
+        global informativeBTC5M
         global informativeBTC15M
         global informativeBTC30M
         global informativeBTC1H
