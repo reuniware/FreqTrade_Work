@@ -59,7 +59,7 @@ class StratEma7Ema25(IStrategy):
     stoploss = -0.25
 
     # Trailing stoploss
-    trailing_stop = True
+    trailing_stop = False
     # trailing_only_offset_is_reached = False
     trailing_stop_positive = 0.005
     # trailing_stop_positive_offset = 0.0  # Disabled / not configured
