@@ -97,7 +97,7 @@ class StratIchimoku006(IStrategy):
         pairs = self.dp.current_whitelist()
         # Assign tf to each pair so they can be downloaded and cached for strategy.
         informative_pairs = [(pair, '15m') for pair in pairs]
-        informative_pairs = [(pair, '30m') for pair in pairs]
+        informative_pairs += [(pair, '30m') for pair in pairs]
         informative_pairs += [(pair, '1h') for pair in pairs]
         informative_pairs += [(pair, '4h') for pair in pairs]
         # Optionally Add additional "static" pairs
