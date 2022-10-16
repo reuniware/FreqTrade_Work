@@ -14,7 +14,9 @@ from support import identify_df_trends
 """
 The best strategy for freqtrade I found today searching on GitHub.
 Strategy found at : https://github.com/devsmitra/trading/tree/183ff838830742ff6a13cafb1e8d7bd8ada26fea/user_data/strategies
-It needs the "support.py" file found in the same directory.
+It needs the "support.py" file found in the same directory (on devsmitra Github repository).
+You can find a copy of the "support.py" file at : https://github.com/reuniware/FreqTrade_Work/blob/main/202210-freqtrade-work/GITHUB_devsmitra_Candlestick_Support_Py.py
+You will have to put this file in the user_data/strategies folder and rename it to "support.py".
 It performs very well on the 20221001-20221014 timerange (in backtest !).
 On 20220901-20221014 timerange : +347.61% and Drawdown = 2.44%
 """
