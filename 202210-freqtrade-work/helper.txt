@@ -45,7 +45,7 @@ freqtrade hyperopt -c config-gateio.json -s SampleStrategy --hyperopt-loss OnlyP
 freqtrade hyperopt -c config-gateio.json -s SampleStrategy --hyperopt-loss OnlyProfitHyperOptLoss --spaces stoploss --timeframe 1d --timerange=20221001-20221006
 
 #LIST ASSETS
-freqtrade list-pairs --exchange gateio --trading-mode futures --print-json
+freqtrade list-pairs --exchange gateio --trading-mode futures --print-json --quote USDT
 
 MS Linux Ubuntu
 user001@11.22.33.44
