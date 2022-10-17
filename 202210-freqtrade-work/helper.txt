@@ -2,7 +2,6 @@ source .env/bin/activate
 
 #TRADING
 freqtrade trade -c config-gateio-static-strat001b.json -s STRAT001B --db-url=sqlite:///strat001b.sqlite
---db-url=sqlite:///myfile1.sqlite
 
 #DATA DOWNLOADING
 freqtrade download-data --days 90 --exchange gateio --config config-test.json -t 1d -t 4h
