@@ -354,6 +354,18 @@ class StratIchimoku008(IStrategy):
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_SSB'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] > dataframe['ICH_CS_KS'])
+
+                & (informative5M['close'] > informative5M['open'])
+                & (informative5M['close'] > informative5M['ICH_SSA_5M'])
+                & (informative5M['close'] > informative5M['ICH_SSB_5M'])
+                & (informative5M['close'] > informative5M['ICH_TS_5M'])
+                & (informative5M['close'] > informative5M['ICH_KS_5M'])
+                & (informative5M['ICH_CS_5M'] > informative5M['ICH_CS_HIGH_5M'])
+                & (informative5M['ICH_CS_5M'] > informative5M['ICH_CS_SSA_5M'])
+                & (informative5M['ICH_CS_5M'] > informative5M['ICH_CS_SSB_5M'])
+                & (informative5M['ICH_CS_5M'] > informative5M['ICH_CS_TS_5M'])
+                & (informative5M['ICH_CS_5M'] > informative5M['ICH_CS_KS_5M'])
+
                 & (informativeBTC1M['close'] > informativeBTC1M['open'])
             ),
             'enter_long'] = 1
@@ -374,6 +386,19 @@ class StratIchimoku008(IStrategy):
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_SSB'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_TS'])
                 & (dataframe['ICH_CS'] < dataframe['ICH_CS_KS'])
+
+                & (informative5M['close'] < informative5M['open'])
+                & (informative5M['close'] < informative5M['ICH_SSA_5M'])
+                & (informative5M['close'] < informative5M['ICH_SSB_5M'])
+                & (informative5M['close'] < informative5M['ICH_TS_5M'])
+                & (informative5M['close'] < informative5M['ICH_KS_5M'])
+
+                & (informative5M['ICH_CS_5M'] < informative5M['ICH_CS_LOW_5M'])
+                & (informative5M['ICH_CS_5M'] < informative5M['ICH_CS_SSA_5M'])
+                & (informative5M['ICH_CS_5M'] < informative5M['ICH_CS_SSB_5M'])
+                & (informative5M['ICH_CS_5M'] < informative5M['ICH_CS_TS_5M'])
+                & (informative5M['ICH_CS_5M'] < informative5M['ICH_CS_KS_5M'])
+
                 & (informativeBTC1M['close'] < informativeBTC1M['open'])
             ),
             'enter_short'] = 1
