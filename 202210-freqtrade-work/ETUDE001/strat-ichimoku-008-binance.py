@@ -56,7 +56,7 @@ class StratIchimoku008Binance(IStrategy):
 
     # Optimal stoploss designed for the strategy.
     # This attribute will be overridden if the config file contains "stoploss".
-    stoploss = -0.25
+    stoploss = -0.005
 
     # Trailing stoploss
     trailing_stop = False
@@ -68,7 +68,7 @@ class StratIchimoku008Binance(IStrategy):
     timeframe = '1m'
 
     # Run "populate_indicators()" only for new candle.
-    process_only_new_candles = True
+    process_only_new_candles = False
 
     # These values can be overridden in the config.
     use_exit_signal = True
@@ -104,9 +104,11 @@ class StratIchimoku008Binance(IStrategy):
         #informative_pairs += [(pair, '4h') for pair in pairs]
         # Optionally Add additional "static" pairs
         #informative_pairs += [("BTC/USDT", "1m"), ("BTC/USDT", "15m"), ("BTC/USDT", "30m"), ("BTC/USDT", "1h"), ("BTC/USDT", "4h"),]
+        informative_pairs += [("BTC/USDT", "1m"), ("BTC/USDT", "5m"),]
         return informative_pairs
 
-    #informativeBTC1M : DataFrame
+    informativeBTC1M : DataFrame
+    informativeBTC5M : DataFrame
     #informativeBTC15M : DataFrame
     #informativeBTC30M : DataFrame
     #informativeBTC1H : DataFrame
@@ -120,7 +122,8 @@ class StratIchimoku008Binance(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        #global informativeBTC1M
+        global informativeBTC1M
+        global informativeBTC5M
         #global informativeBTC15M
         #global informativeBTC30M
         #global informativeBTC1H
@@ -135,8 +138,10 @@ class StratIchimoku008Binance(IStrategy):
         #log_to_results(metadata['pair'])
         currentPair = str(metadata['pair'])
 
-        #inf_tf = '1m'
-        #informativeBTC1M = self.dp.get_pair_dataframe(pair="BTC/USDT", timeframe=inf_tf)
+        inf_tf = '1m'
+        informativeBTC1M = self.dp.get_pair_dataframe(pair="BTC/USDT", timeframe=inf_tf)
+        inf_tf = '5m'
+        informativeBTC5M = self.dp.get_pair_dataframe(pair="BTC/USDT", timeframe=inf_tf)
         #inf_tf = '15m'
         #informativeBTC15M = self.dp.get_pair_dataframe(pair="BTC/USDT", timeframe=inf_tf)
         #inf_tf = '30m'
@@ -161,17 +166,30 @@ class StratIchimoku008Binance(IStrategy):
         #log_to_results(informative15M.to_string())
 
         #Ichimoku calculations for the BTC in 1m
-        #informativeBTC1M['BTC_ICH_SSB_1M'] = taichi.trend.ichimoku_b(informativeBTC1M['high'], informativeBTC1M['low'], window2=26, window3=52).shift(26)
-        #informativeBTC1M['BTC_ICH_SSA_1M'] = taichi.trend.ichimoku_a(informativeBTC1M['high'], informativeBTC1M['low'], window1=9, window2=26).shift(26)
-        #informativeBTC1M['BTC_ICH_KS_1M'] = taichi.trend.ichimoku_base_line(informativeBTC1M['high'], informativeBTC1M['low'])
-        #informativeBTC1M['BTC_ICH_TS_1M'] = taichi.trend.ichimoku_conversion_line(informativeBTC1M['high'], informativeBTC1M['low'])
-        #informativeBTC1M['BTC_ICH_CS_1M'] = informativeBTC1M['close']
-        #informativeBTC1M['BTC_ICH_CS_HIGH_1M'] = informativeBTC1M['high'].shift(26)
-        #informativeBTC1M['BTC_ICH_CS_LOW_1M'] = informativeBTC1M['low'].shift(26)
-        #informativeBTC1M['BTC_ICH_CS_KS_1M'] = informativeBTC1M['BTC_ICH_KS_1M'].shift(26)
-        #informativeBTC1M['BTC_ICH_CS_TS_1M'] = informativeBTC1M['BTC_ICH_TS_1M'].shift(26)
-        #informativeBTC1M['BTC_ICH_CS_SSA_1M'] = informativeBTC1M['BTC_ICH_SSA_1M'].shift(26)
-        #informativeBTC1M['BTC_ICH_CS_SSB_1M'] = informativeBTC1M['BTC_ICH_SSB_1M'].shift(26)
+        informativeBTC1M['BTC_ICH_SSB_1M'] = taichi.trend.ichimoku_b(informativeBTC1M['high'], informativeBTC1M['low'], window2=26, window3=52).shift(26)
+        informativeBTC1M['BTC_ICH_SSA_1M'] = taichi.trend.ichimoku_a(informativeBTC1M['high'], informativeBTC1M['low'], window1=9, window2=26).shift(26)
+        informativeBTC1M['BTC_ICH_KS_1M'] = taichi.trend.ichimoku_base_line(informativeBTC1M['high'], informativeBTC1M['low'])
+        informativeBTC1M['BTC_ICH_TS_1M'] = taichi.trend.ichimoku_conversion_line(informativeBTC1M['high'], informativeBTC1M['low'])
+        informativeBTC1M['BTC_ICH_CS_1M'] = informativeBTC1M['close']
+        informativeBTC1M['BTC_ICH_CS_HIGH_1M'] = informativeBTC1M['high'].shift(26)
+        informativeBTC1M['BTC_ICH_CS_LOW_1M'] = informativeBTC1M['low'].shift(26)
+        informativeBTC1M['BTC_ICH_CS_KS_1M'] = informativeBTC1M['BTC_ICH_KS_1M'].shift(26)
+        informativeBTC1M['BTC_ICH_CS_TS_1M'] = informativeBTC1M['BTC_ICH_TS_1M'].shift(26)
+        informativeBTC1M['BTC_ICH_CS_SSA_1M'] = informativeBTC1M['BTC_ICH_SSA_1M'].shift(26)
+        informativeBTC1M['BTC_ICH_CS_SSB_1M'] = informativeBTC1M['BTC_ICH_SSB_1M'].shift(26)
+
+        #Ichimoku calculations for the BTC in 5m
+        informativeBTC5M['BTC_ICH_SSB_5M'] = taichi.trend.ichimoku_b(informativeBTC5M['high'], informativeBTC5M['low'], window2=26, window3=52).shift(26)
+        informativeBTC5M['BTC_ICH_SSA_5M'] = taichi.trend.ichimoku_a(informativeBTC5M['high'], informativeBTC5M['low'], window1=9, window2=26).shift(26)
+        informativeBTC5M['BTC_ICH_KS_5M'] = taichi.trend.ichimoku_base_line(informativeBTC5M['high'], informativeBTC5M['low'])
+        informativeBTC5M['BTC_ICH_TS_5M'] = taichi.trend.ichimoku_conversion_line(informativeBTC5M['high'], informativeBTC5M['low'])
+        informativeBTC5M['BTC_ICH_CS_5M'] = informativeBTC5M['close']
+        informativeBTC5M['BTC_ICH_CS_HIGH_5M'] = informativeBTC5M['high'].shift(26)
+        informativeBTC5M['BTC_ICH_CS_LOW_5M'] = informativeBTC5M['low'].shift(26)
+        informativeBTC5M['BTC_ICH_CS_KS_5M'] = informativeBTC5M['BTC_ICH_KS_5M'].shift(26)
+        informativeBTC5M['BTC_ICH_CS_TS_5M'] = informativeBTC5M['BTC_ICH_TS_5M'].shift(26)
+        informativeBTC5M['BTC_ICH_CS_SSA_5M'] = informativeBTC5M['BTC_ICH_SSA_5M'].shift(26)
+        informativeBTC5M['BTC_ICH_CS_SSB_5M'] = informativeBTC5M['BTC_ICH_SSB_5M'].shift(26)
 
         #Ichimoku calculations for the BTC in 15m
         #informativeBTC15M['BTC_ICH_SSB_15M'] = taichi.trend.ichimoku_b(informativeBTC15M['high'], informativeBTC15M['low'], window2=26, window3=52).shift(26)
@@ -325,7 +343,8 @@ class StratIchimoku008Binance(IStrategy):
     
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        #global informativeBTC1M
+        global informativeBTC1M
+        global informativeBTC5M
         #global informativeBTC15M
         #global informativeBTC30M
         #global informativeBTC1H
@@ -377,7 +396,8 @@ class StratIchimoku008Binance(IStrategy):
                 & (informative15M['ICH_CS_15M'] > informative15M['ICH_CS_TS_15M'])
                 & (informative15M['ICH_CS_15M'] > informative15M['ICH_CS_KS_15M'])
 
-                #& (informativeBTC1M['close'] > informativeBTC1M['open'])
+                & (informativeBTC1M['close'] > informativeBTC1M['open'])
+                & (informativeBTC5M['close'] > informativeBTC5M['open'])
             ),
             'enter_long'] = 1
 
@@ -421,7 +441,8 @@ class StratIchimoku008Binance(IStrategy):
                 & (informative15M['ICH_CS_15M'] < informative15M['ICH_CS_TS_15M'])
                 & (informative15M['ICH_CS_15M'] < informative15M['ICH_CS_KS_15M'])
 
-                #& (informativeBTC1M['close'] < informativeBTC1M['open'])
+                & (informativeBTC1M['close'] < informativeBTC1M['open'])
+                & (informativeBTC5M['close'] < informativeBTC5M['open'])
             ),
             'enter_short'] = 1
 
@@ -429,7 +450,8 @@ class StratIchimoku008Binance(IStrategy):
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        #global informativeBTC1M
+        global informativeBTC1M
+        global informativeBTC5M
         #global informativeBTC15M
         #global informativeBTC30M
         #global informativeBTC1H
