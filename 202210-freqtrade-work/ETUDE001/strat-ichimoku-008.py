@@ -51,7 +51,7 @@ class StratIchimoku008(IStrategy):
     minimal_roi = {
         #"60": 0.01,
         #"30": 0.01,
-        "0": 0.25
+        "0": 0.50
     }
 
     # Optimal stoploss designed for the strategy.
@@ -68,7 +68,7 @@ class StratIchimoku008(IStrategy):
     timeframe = '1m'
 
     # Run "populate_indicators()" only for new candle.
-    process_only_new_candles = True
+    process_only_new_candles = False
 
     # These values can be overridden in the config.
     use_exit_signal = True
@@ -96,67 +96,72 @@ class StratIchimoku008(IStrategy):
         # get access to all pairs available in whitelist.
         pairs = self.dp.current_whitelist()
         # Assign tf to each pair so they can be downloaded and cached for strategy.
-        informative_pairs = [(pair, '1m') for pair in pairs]
-        informative_pairs += [(pair, '5m') for pair in pairs]
+        #informative_pairs = [(pair, '1m') for pair in pairs]
+        informative_pairs = [(pair, '5m') for pair in pairs]
         informative_pairs += [(pair, '15m') for pair in pairs]
-        informative_pairs += [(pair, '30m') for pair in pairs]
-        informative_pairs += [(pair, '1h') for pair in pairs]
-        informative_pairs += [(pair, '4h') for pair in pairs]
+        #informative_pairs += [(pair, '30m') for pair in pairs]
+        #informative_pairs += [(pair, '1h') for pair in pairs]
+        #informative_pairs += [(pair, '4h') for pair in pairs]
         # Optionally Add additional "static" pairs
-        informative_pairs += [("BTC/USDT:USDT", "1m"), ("BTC/USDT:USDT", "15m"), ("BTC/USDT:USDT", "30m"), ("BTC/USDT:USDT", "1h"), ("BTC/USDT:USDT", "4h"),]
+        #informative_pairs += [("BTC/USDT:USDT", "1m"), ("BTC/USDT:USDT", "15m"), ("BTC/USDT:USDT", "30m"), ("BTC/USDT:USDT", "1h"), ("BTC/USDT:USDT", "4h"),]
+        informative_pairs += [("BTC/USDT:USDT", "1m"), ("BTC/USDT:USDT", "5m"),]
         return informative_pairs
 
     informativeBTC1M : DataFrame
-    informativeBTC15M : DataFrame
-    informativeBTC30M : DataFrame
-    informativeBTC1H : DataFrame
-    informativeBTC4H : DataFrame
-    informative1M : DataFrame
+    informativeBTC5M : DataFrame
+    #informativeBTC15M : DataFrame
+    #informativeBTC30M : DataFrame
+    #informativeBTC1H : DataFrame
+    #informativeBTC4H : DataFrame
+    #informative1M : DataFrame
     informative5M : DataFrame
     informative15M : DataFrame
-    informative30M : DataFrame
-    informative1H : DataFrame
-    informative4H : DataFrame
+    #informative30M : DataFrame
+    #informative1H : DataFrame
+    #informative4H : DataFrame
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
         global informativeBTC1M
-        global informativeBTC15M
-        global informativeBTC30M
-        global informativeBTC1H
-        global informativeBTC4H
-        global informative1M
+        global informativeBTC5M
+        #global informativeBTC15M
+        #global informativeBTC30M
+        #global informativeBTC1H
+        #global informativeBTC4H
+        #global informative1M
         global informative5M
         global informative15M
-        global informative30M
-        global informative1H
-        global informative4H
+        #global informative30M
+        #global informative1H
+        #global informative4H
 
         #log_to_results(metadata['pair'])
         currentPair = str(metadata['pair'])
 
         inf_tf = '1m'
         informativeBTC1M = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
-        inf_tf = '15m'
-        informativeBTC15M = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
-        inf_tf = '30m'
-        informativeBTC30M = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
-        inf_tf = '1h'
-        informativeBTC1H = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
-        inf_tf = '4h'
-        informativeBTC4H = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
-        inf_tf = '1m'
-        informative1M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
+        inf_tf = '5m'
+        informativeBTC5M = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
+        #inf_tf = '15m'
+        #informativeBTC15M = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
+        #inf_tf = '30m'
+        #informativeBTC30M = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
+        #inf_tf = '1h'
+        #informativeBTC1H = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
+        #inf_tf = '4h'
+        #informativeBTC4H = self.dp.get_pair_dataframe(pair="BTC/USDT:USDT", timeframe=inf_tf)
+        #inf_tf = '1m'
+        #informative1M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
         inf_tf = '5m'
         informative5M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
         inf_tf = '15m'
         informative15M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
-        inf_tf = '30m'
-        informative30M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
-        inf_tf = '1h'
-        informative1H = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
-        inf_tf = '4h'
-        informative4H = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
+        #inf_tf = '30m'
+        #informative30M = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
+        #inf_tf = '1h'
+        #informative1H = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
+        #inf_tf = '4h'
+        #informative4H = self.dp.get_pair_dataframe(pair=currentPair, timeframe=inf_tf)
 
         #log_to_results(informative15M.to_string())
 
@@ -173,70 +178,83 @@ class StratIchimoku008(IStrategy):
         informativeBTC1M['BTC_ICH_CS_SSA_1M'] = informativeBTC1M['BTC_ICH_SSA_1M'].shift(26)
         informativeBTC1M['BTC_ICH_CS_SSB_1M'] = informativeBTC1M['BTC_ICH_SSB_1M'].shift(26)
 
+        #Ichimoku calculations for the BTC in 5m
+        informativeBTC5M['BTC_ICH_SSB_5M'] = taichi.trend.ichimoku_b(informativeBTC5M['high'], informativeBTC5M['low'], window2=26, window3=52).shift(26)
+        informativeBTC5M['BTC_ICH_SSA_5M'] = taichi.trend.ichimoku_a(informativeBTC5M['high'], informativeBTC5M['low'], window1=9, window2=26).shift(26)
+        informativeBTC5M['BTC_ICH_KS_5M'] = taichi.trend.ichimoku_base_line(informativeBTC5M['high'], informativeBTC5M['low'])
+        informativeBTC5M['BTC_ICH_TS_5M'] = taichi.trend.ichimoku_conversion_line(informativeBTC5M['high'], informativeBTC5M['low'])
+        informativeBTC5M['BTC_ICH_CS_5M'] = informativeBTC5M['close']
+        informativeBTC5M['BTC_ICH_CS_HIGH_5M'] = informativeBTC5M['high'].shift(26)
+        informativeBTC5M['BTC_ICH_CS_LOW_5M'] = informativeBTC5M['low'].shift(26)
+        informativeBTC5M['BTC_ICH_CS_KS_5M'] = informativeBTC5M['BTC_ICH_KS_5M'].shift(26)
+        informativeBTC5M['BTC_ICH_CS_TS_5M'] = informativeBTC5M['BTC_ICH_TS_5M'].shift(26)
+        informativeBTC5M['BTC_ICH_CS_SSA_5M'] = informativeBTC5M['BTC_ICH_SSA_5M'].shift(26)
+        informativeBTC5M['BTC_ICH_CS_SSB_5M'] = informativeBTC5M['BTC_ICH_SSB_5M'].shift(26)
+
         #Ichimoku calculations for the BTC in 15m
-        informativeBTC15M['BTC_ICH_SSB_15M'] = taichi.trend.ichimoku_b(informativeBTC15M['high'], informativeBTC15M['low'], window2=26, window3=52).shift(26)
-        informativeBTC15M['BTC_ICH_SSA_15M'] = taichi.trend.ichimoku_a(informativeBTC15M['high'], informativeBTC15M['low'], window1=9, window2=26).shift(26)
-        informativeBTC15M['BTC_ICH_KS_15M'] = taichi.trend.ichimoku_base_line(informativeBTC15M['high'], informativeBTC15M['low'])
-        informativeBTC15M['BTC_ICH_TS_15M'] = taichi.trend.ichimoku_conversion_line(informativeBTC15M['high'], informativeBTC15M['low'])
-        informativeBTC15M['BTC_ICH_CS_15M'] = informativeBTC15M['close']
-        informativeBTC15M['BTC_ICH_CS_HIGH_15M'] = informativeBTC15M['high'].shift(26)
-        informativeBTC15M['BTC_ICH_CS_LOW_15M'] = informativeBTC15M['low'].shift(26)
-        informativeBTC15M['BTC_ICH_CS_KS_15M'] = informativeBTC15M['BTC_ICH_KS_15M'].shift(26)
-        informativeBTC15M['BTC_ICH_CS_TS_15M'] = informativeBTC15M['BTC_ICH_TS_15M'].shift(26)
-        informativeBTC15M['BTC_ICH_CS_SSA_15M'] = informativeBTC15M['BTC_ICH_SSA_15M'].shift(26)
-        informativeBTC15M['BTC_ICH_CS_SSB_15M'] = informativeBTC15M['BTC_ICH_SSB_15M'].shift(26)
+        #informativeBTC15M['BTC_ICH_SSB_15M'] = taichi.trend.ichimoku_b(informativeBTC15M['high'], informativeBTC15M['low'], window2=26, window3=52).shift(26)
+        #informativeBTC15M['BTC_ICH_SSA_15M'] = taichi.trend.ichimoku_a(informativeBTC15M['high'], informativeBTC15M['low'], window1=9, window2=26).shift(26)
+        #informativeBTC15M['BTC_ICH_KS_15M'] = taichi.trend.ichimoku_base_line(informativeBTC15M['high'], informativeBTC15M['low'])
+        #informativeBTC15M['BTC_ICH_TS_15M'] = taichi.trend.ichimoku_conversion_line(informativeBTC15M['high'], informativeBTC15M['low'])
+        #informativeBTC15M['BTC_ICH_CS_15M'] = informativeBTC15M['close']
+        #informativeBTC15M['BTC_ICH_CS_HIGH_15M'] = informativeBTC15M['high'].shift(26)
+        #informativeBTC15M['BTC_ICH_CS_LOW_15M'] = informativeBTC15M['low'].shift(26)
+        #informativeBTC15M['BTC_ICH_CS_KS_15M'] = informativeBTC15M['BTC_ICH_KS_15M'].shift(26)
+        #informativeBTC15M['BTC_ICH_CS_TS_15M'] = informativeBTC15M['BTC_ICH_TS_15M'].shift(26)
+        #informativeBTC15M['BTC_ICH_CS_SSA_15M'] = informativeBTC15M['BTC_ICH_SSA_15M'].shift(26)
+        #informativeBTC15M['BTC_ICH_CS_SSB_15M'] = informativeBTC15M['BTC_ICH_SSB_15M'].shift(26)
 
         #Ichimoku calculations for the BTC in 30m
-        informativeBTC30M['BTC_ICH_SSB_30M'] = taichi.trend.ichimoku_b(informativeBTC30M['high'], informativeBTC30M['low'], window2=26, window3=52).shift(26)
-        informativeBTC30M['BTC_ICH_SSA_30M'] = taichi.trend.ichimoku_a(informativeBTC30M['high'], informativeBTC30M['low'], window1=9, window2=26).shift(26)
-        informativeBTC30M['BTC_ICH_KS_30M'] = taichi.trend.ichimoku_base_line(informativeBTC30M['high'], informativeBTC30M['low'])
-        informativeBTC30M['BTC_ICH_TS_30M'] = taichi.trend.ichimoku_conversion_line(informativeBTC30M['high'], informativeBTC30M['low'])
-        informativeBTC30M['BTC_ICH_CS_30M'] = informativeBTC30M['close']
-        informativeBTC30M['BTC_ICH_CS_HIGH_30M'] = informativeBTC30M['high'].shift(26)
-        informativeBTC30M['BTC_ICH_CS_LOW_30M'] = informativeBTC30M['low'].shift(26)
-        informativeBTC30M['BTC_ICH_CS_KS_30M'] = informativeBTC30M['BTC_ICH_KS_30M'].shift(26)
-        informativeBTC30M['BTC_ICH_CS_TS_30M'] = informativeBTC30M['BTC_ICH_TS_30M'].shift(26)
-        informativeBTC30M['BTC_ICH_CS_SSA_30M'] = informativeBTC30M['BTC_ICH_SSA_30M'].shift(26)
-        informativeBTC30M['BTC_ICH_CS_SSB_30M'] = informativeBTC30M['BTC_ICH_SSB_30M'].shift(26)
+        #informativeBTC30M['BTC_ICH_SSB_30M'] = taichi.trend.ichimoku_b(informativeBTC30M['high'], informativeBTC30M['low'], window2=26, window3=52).shift(26)
+        #informativeBTC30M['BTC_ICH_SSA_30M'] = taichi.trend.ichimoku_a(informativeBTC30M['high'], informativeBTC30M['low'], window1=9, window2=26).shift(26)
+        #informativeBTC30M['BTC_ICH_KS_30M'] = taichi.trend.ichimoku_base_line(informativeBTC30M['high'], informativeBTC30M['low'])
+        #informativeBTC30M['BTC_ICH_TS_30M'] = taichi.trend.ichimoku_conversion_line(informativeBTC30M['high'], informativeBTC30M['low'])
+        #informativeBTC30M['BTC_ICH_CS_30M'] = informativeBTC30M['close']
+        #informativeBTC30M['BTC_ICH_CS_HIGH_30M'] = informativeBTC30M['high'].shift(26)
+        #informativeBTC30M['BTC_ICH_CS_LOW_30M'] = informativeBTC30M['low'].shift(26)
+        #informativeBTC30M['BTC_ICH_CS_KS_30M'] = informativeBTC30M['BTC_ICH_KS_30M'].shift(26)
+        #informativeBTC30M['BTC_ICH_CS_TS_30M'] = informativeBTC30M['BTC_ICH_TS_30M'].shift(26)
+        #informativeBTC30M['BTC_ICH_CS_SSA_30M'] = informativeBTC30M['BTC_ICH_SSA_30M'].shift(26)
+        #informativeBTC30M['BTC_ICH_CS_SSB_30M'] = informativeBTC30M['BTC_ICH_SSB_30M'].shift(26)
 
         #Ichimoku calculations for the BTC in 1h
-        informativeBTC1H['BTC_ICH_SSB_1H'] = taichi.trend.ichimoku_b(informativeBTC1H['high'], informativeBTC1H['low'], window2=26, window3=52).shift(26)
-        informativeBTC1H['BTC_ICH_SSA_1H'] = taichi.trend.ichimoku_a(informativeBTC1H['high'], informativeBTC1H['low'], window1=9, window2=26).shift(26)
-        informativeBTC1H['BTC_ICH_KS_1H'] = taichi.trend.ichimoku_base_line(informativeBTC1H['high'], informativeBTC1H['low'])
-        informativeBTC1H['BTC_ICH_TS_1H'] = taichi.trend.ichimoku_conversion_line(informativeBTC1H['high'], informativeBTC1H['low'])
-        informativeBTC1H['BTC_ICH_CS_1H'] = informativeBTC1H['close']
-        informativeBTC1H['BTC_ICH_CS_HIGH_1H'] = informativeBTC1H['high'].shift(26)
-        informativeBTC1H['BTC_ICH_CS_LOW_1H'] = informativeBTC1H['low'].shift(26)
-        informativeBTC1H['BTC_ICH_CS_KS_1H'] = informativeBTC1H['BTC_ICH_KS_1H'].shift(26)
-        informativeBTC1H['BTC_ICH_CS_TS_1H'] = informativeBTC1H['BTC_ICH_TS_1H'].shift(26)
-        informativeBTC1H['BTC_ICH_CS_SSA_1H'] = informativeBTC1H['BTC_ICH_SSA_1H'].shift(26)
-        informativeBTC1H['BTC_ICH_CS_SSB_1H'] = informativeBTC1H['BTC_ICH_SSB_1H'].shift(26)
+        #informativeBTC1H['BTC_ICH_SSB_1H'] = taichi.trend.ichimoku_b(informativeBTC1H['high'], informativeBTC1H['low'], window2=26, window3=52).shift(26)
+        #informativeBTC1H['BTC_ICH_SSA_1H'] = taichi.trend.ichimoku_a(informativeBTC1H['high'], informativeBTC1H['low'], window1=9, window2=26).shift(26)
+        #informativeBTC1H['BTC_ICH_KS_1H'] = taichi.trend.ichimoku_base_line(informativeBTC1H['high'], informativeBTC1H['low'])
+        #informativeBTC1H['BTC_ICH_TS_1H'] = taichi.trend.ichimoku_conversion_line(informativeBTC1H['high'], informativeBTC1H['low'])
+        #informativeBTC1H['BTC_ICH_CS_1H'] = informativeBTC1H['close']
+        #informativeBTC1H['BTC_ICH_CS_HIGH_1H'] = informativeBTC1H['high'].shift(26)
+        #informativeBTC1H['BTC_ICH_CS_LOW_1H'] = informativeBTC1H['low'].shift(26)
+        #informativeBTC1H['BTC_ICH_CS_KS_1H'] = informativeBTC1H['BTC_ICH_KS_1H'].shift(26)
+        #informativeBTC1H['BTC_ICH_CS_TS_1H'] = informativeBTC1H['BTC_ICH_TS_1H'].shift(26)
+        #informativeBTC1H['BTC_ICH_CS_SSA_1H'] = informativeBTC1H['BTC_ICH_SSA_1H'].shift(26)
+        #informativeBTC1H['BTC_ICH_CS_SSB_1H'] = informativeBTC1H['BTC_ICH_SSB_1H'].shift(26)
 
         #Ichimoku calculations for the BTC in 4h
-        informativeBTC4H['BTC_ICH_SSB_4H'] = taichi.trend.ichimoku_b(informativeBTC4H['high'], informativeBTC4H['low'], window2=26, window3=52).shift(26)
-        informativeBTC4H['BTC_ICH_SSA_4H'] = taichi.trend.ichimoku_a(informativeBTC4H['high'], informativeBTC4H['low'], window1=9, window2=26).shift(26)
-        informativeBTC4H['BTC_ICH_KS_4H'] = taichi.trend.ichimoku_base_line(informativeBTC4H['high'], informativeBTC4H['low'])
-        informativeBTC4H['BTC_ICH_TS_4H'] = taichi.trend.ichimoku_conversion_line(informativeBTC4H['high'], informativeBTC4H['low'])
-        informativeBTC4H['BTC_ICH_CS_4H'] = informativeBTC4H['close']
-        informativeBTC4H['BTC_ICH_CS_HIGH_4H'] = informativeBTC4H['high'].shift(26)
-        informativeBTC4H['BTC_ICH_CS_LOW_4H'] = informativeBTC4H['low'].shift(26)
-        informativeBTC4H['BTC_ICH_CS_KS_4H'] = informativeBTC4H['BTC_ICH_KS_4H'].shift(26)
-        informativeBTC4H['BTC_ICH_CS_TS_4H'] = informativeBTC4H['BTC_ICH_TS_4H'].shift(26)
-        informativeBTC4H['BTC_ICH_CS_SSA_4H'] = informativeBTC4H['BTC_ICH_SSA_4H'].shift(26)
-        informativeBTC4H['BTC_ICH_CS_SSB_4H'] = informativeBTC4H['BTC_ICH_SSB_4H'].shift(26)
+        #informativeBTC4H['BTC_ICH_SSB_4H'] = taichi.trend.ichimoku_b(informativeBTC4H['high'], informativeBTC4H['low'], window2=26, window3=52).shift(26)
+        #informativeBTC4H['BTC_ICH_SSA_4H'] = taichi.trend.ichimoku_a(informativeBTC4H['high'], informativeBTC4H['low'], window1=9, window2=26).shift(26)
+        #informativeBTC4H['BTC_ICH_KS_4H'] = taichi.trend.ichimoku_base_line(informativeBTC4H['high'], informativeBTC4H['low'])
+        #informativeBTC4H['BTC_ICH_TS_4H'] = taichi.trend.ichimoku_conversion_line(informativeBTC4H['high'], informativeBTC4H['low'])
+        #informativeBTC4H['BTC_ICH_CS_4H'] = informativeBTC4H['close']
+        #informativeBTC4H['BTC_ICH_CS_HIGH_4H'] = informativeBTC4H['high'].shift(26)
+        #informativeBTC4H['BTC_ICH_CS_LOW_4H'] = informativeBTC4H['low'].shift(26)
+        #informativeBTC4H['BTC_ICH_CS_KS_4H'] = informativeBTC4H['BTC_ICH_KS_4H'].shift(26)
+        #informativeBTC4H['BTC_ICH_CS_TS_4H'] = informativeBTC4H['BTC_ICH_TS_4H'].shift(26)
+        #informativeBTC4H['BTC_ICH_CS_SSA_4H'] = informativeBTC4H['BTC_ICH_SSA_4H'].shift(26)
+        #informativeBTC4H['BTC_ICH_CS_SSB_4H'] = informativeBTC4H['BTC_ICH_SSB_4H'].shift(26)
 
         #Ichimoku calculations for the current pair in 1m
-        informative1M['ICH_SSB_1M'] = taichi.trend.ichimoku_b(informative1M['high'], informative1M['low'], window2=26, window3=52).shift(26)
-        informative1M['ICH_SSA_1M'] = taichi.trend.ichimoku_a(informative1M['high'], informative1M['low'], window1=9, window2=26).shift(26)
-        informative1M['ICH_KS_1M'] = taichi.trend.ichimoku_base_line(informative1M['high'], informative1M['low'])
-        informative1M['ICH_TS_1M'] = taichi.trend.ichimoku_conversion_line(informative1M['high'], informative1M['low'])
-        informative1M['ICH_CS_1M'] = informative1M['close']
-        informative1M['ICH_CS_HIGH_1M'] = informative1M['high'].shift(26)
-        informative1M['ICH_CS_LOW_1M'] = informative1M['low'].shift(26)
-        informative1M['ICH_CS_KS_1M'] = informative1M['ICH_KS_1M'].shift(26)
-        informative1M['ICH_CS_TS_1M'] = informative1M['ICH_TS_1M'].shift(26)
-        informative1M['ICH_CS_SSA_1M'] = informative1M['ICH_SSA_1M'].shift(26)
-        informative1M['ICH_CS_SSB_1M'] = informative1M['ICH_SSB_1M'].shift(26)
+        #informative1M['ICH_SSB_1M'] = taichi.trend.ichimoku_b(informative1M['high'], informative1M['low'], window2=26, window3=52).shift(26)
+        #informative1M['ICH_SSA_1M'] = taichi.trend.ichimoku_a(informative1M['high'], informative1M['low'], window1=9, window2=26).shift(26)
+        #informative1M['ICH_KS_1M'] = taichi.trend.ichimoku_base_line(informative1M['high'], informative1M['low'])
+        #informative1M['ICH_TS_1M'] = taichi.trend.ichimoku_conversion_line(informative1M['high'], informative1M['low'])
+        #informative1M['ICH_CS_1M'] = informative1M['close']
+        #informative1M['ICH_CS_HIGH_1M'] = informative1M['high'].shift(26)
+        #informative1M['ICH_CS_LOW_1M'] = informative1M['low'].shift(26)
+        #informative1M['ICH_CS_KS_1M'] = informative1M['ICH_KS_1M'].shift(26)
+        #informative1M['ICH_CS_TS_1M'] = informative1M['ICH_TS_1M'].shift(26)
+        #informative1M['ICH_CS_SSA_1M'] = informative1M['ICH_SSA_1M'].shift(26)
+        #informative1M['ICH_CS_SSB_1M'] = informative1M['ICH_SSB_1M'].shift(26)
 
         #Ichimoku calculations for the current pair in 5m
         informative5M['ICH_SSB_5M'] = taichi.trend.ichimoku_b(informative5M['high'], informative5M['low'], window2=26, window3=52).shift(26)
@@ -265,43 +283,43 @@ class StratIchimoku008(IStrategy):
         informative15M['ICH_CS_SSB_15M'] = informative15M['ICH_SSB_15M'].shift(26)
 
         #Ichimoku calculations for the current pair in 30m
-        informative30M['ICH_SSB_30M'] = taichi.trend.ichimoku_b(informative30M['high'], informative30M['low'], window2=26, window3=52).shift(26)
-        informative30M['ICH_SSA_30M'] = taichi.trend.ichimoku_a(informative30M['high'], informative30M['low'], window1=9, window2=26).shift(26)
-        informative30M['ICH_KS_30M'] = taichi.trend.ichimoku_base_line(informative30M['high'], informative30M['low'])
-        informative30M['ICH_TS_30M'] = taichi.trend.ichimoku_conversion_line(informative30M['high'], informative30M['low'])
-        informative30M['ICH_CS_30M'] = informative30M['close']
-        informative30M['ICH_CS_HIGH_30M'] = informative30M['high'].shift(26)
-        informative30M['ICH_CS_LOW_30M'] = informative30M['low'].shift(26)
-        informative30M['ICH_CS_KS_30M'] = informative30M['ICH_KS_30M'].shift(26)
-        informative30M['ICH_CS_TS_30M'] = informative30M['ICH_TS_30M'].shift(26)
-        informative30M['ICH_CS_SSA_30M'] = informative30M['ICH_SSA_30M'].shift(26)
-        informative30M['ICH_CS_SSB_30M'] = informative30M['ICH_SSB_30M'].shift(26)
+        #informative30M['ICH_SSB_30M'] = taichi.trend.ichimoku_b(informative30M['high'], informative30M['low'], window2=26, window3=52).shift(26)
+        #informative30M['ICH_SSA_30M'] = taichi.trend.ichimoku_a(informative30M['high'], informative30M['low'], window1=9, window2=26).shift(26)
+        #informative30M['ICH_KS_30M'] = taichi.trend.ichimoku_base_line(informative30M['high'], informative30M['low'])
+        #informative30M['ICH_TS_30M'] = taichi.trend.ichimoku_conversion_line(informative30M['high'], informative30M['low'])
+        #informative30M['ICH_CS_30M'] = informative30M['close']
+        #informative30M['ICH_CS_HIGH_30M'] = informative30M['high'].shift(26)
+        #informative30M['ICH_CS_LOW_30M'] = informative30M['low'].shift(26)
+        #informative30M['ICH_CS_KS_30M'] = informative30M['ICH_KS_30M'].shift(26)
+        #informative30M['ICH_CS_TS_30M'] = informative30M['ICH_TS_30M'].shift(26)
+        #informative30M['ICH_CS_SSA_30M'] = informative30M['ICH_SSA_30M'].shift(26)
+        #informative30M['ICH_CS_SSB_30M'] = informative30M['ICH_SSB_30M'].shift(26)
 
         #Ichimoku calculations for the current pair in 1h
-        informative1H['ICH_SSB_1H'] = taichi.trend.ichimoku_b(informative1H['high'], informative1H['low'], window2=26, window3=52).shift(26)
-        informative1H['ICH_SSA_1H'] = taichi.trend.ichimoku_a(informative1H['high'], informative1H['low'], window1=9, window2=26).shift(26)
-        informative1H['ICH_KS_1H'] = taichi.trend.ichimoku_base_line(informative1H['high'], informative1H['low'])
-        informative1H['ICH_TS_1H'] = taichi.trend.ichimoku_conversion_line(informative1H['high'], informative1H['low'])
-        informative1H['ICH_CS_1H'] = informative1H['close']
-        informative1H['ICH_CS_HIGH_1H'] = informative1H['high'].shift(26)
-        informative1H['ICH_CS_LOW_1H'] = informative1H['low'].shift(26)
-        informative1H['ICH_CS_KS_1H'] = informative1H['ICH_KS_1H'].shift(26)
-        informative1H['ICH_CS_TS_1H'] = informative1H['ICH_TS_1H'].shift(26)
-        informative1H['ICH_CS_SSA_1H'] = informative1H['ICH_SSA_1H'].shift(26)
-        informative1H['ICH_CS_SSB_1H'] = informative1H['ICH_SSB_1H'].shift(26)
+        #informative1H['ICH_SSB_1H'] = taichi.trend.ichimoku_b(informative1H['high'], informative1H['low'], window2=26, window3=52).shift(26)
+        #informative1H['ICH_SSA_1H'] = taichi.trend.ichimoku_a(informative1H['high'], informative1H['low'], window1=9, window2=26).shift(26)
+        #informative1H['ICH_KS_1H'] = taichi.trend.ichimoku_base_line(informative1H['high'], informative1H['low'])
+        #informative1H['ICH_TS_1H'] = taichi.trend.ichimoku_conversion_line(informative1H['high'], informative1H['low'])
+        #informative1H['ICH_CS_1H'] = informative1H['close']
+        #informative1H['ICH_CS_HIGH_1H'] = informative1H['high'].shift(26)
+        #informative1H['ICH_CS_LOW_1H'] = informative1H['low'].shift(26)
+        #informative1H['ICH_CS_KS_1H'] = informative1H['ICH_KS_1H'].shift(26)
+        #informative1H['ICH_CS_TS_1H'] = informative1H['ICH_TS_1H'].shift(26)
+        #informative1H['ICH_CS_SSA_1H'] = informative1H['ICH_SSA_1H'].shift(26)
+        #informative1H['ICH_CS_SSB_1H'] = informative1H['ICH_SSB_1H'].shift(26)
 
         #Ichimoku calculations for the current pair in 4h
-        informative4H['ICH_SSB_4H'] = taichi.trend.ichimoku_b(informative4H['high'], informative4H['low'], window2=26, window3=52).shift(26)
-        informative4H['ICH_SSA_4H'] = taichi.trend.ichimoku_a(informative4H['high'], informative4H['low'], window1=9, window2=26).shift(26)
-        informative4H['ICH_KS_4H'] = taichi.trend.ichimoku_base_line(informative4H['high'], informative4H['low'])
-        informative4H['ICH_TS_4H'] = taichi.trend.ichimoku_conversion_line(informative4H['high'], informative4H['low'])
-        informative4H['ICH_CS_4H'] = informative4H['close']
-        informative4H['ICH_CS_HIGH_4H'] = informative4H['high'].shift(26)
-        informative4H['ICH_CS_LOW_4H'] = informative4H['low'].shift(26)
-        informative4H['ICH_CS_KS_4H'] = informative4H['ICH_KS_4H'].shift(26)
-        informative4H['ICH_CS_TS_4H'] = informative4H['ICH_TS_4H'].shift(26)
-        informative4H['ICH_CS_SSA_4H'] = informative4H['ICH_SSA_4H'].shift(26)
-        informative4H['ICH_CS_SSB_4H'] = informative4H['ICH_SSB_4H'].shift(26)
+        #informative4H['ICH_SSB_4H'] = taichi.trend.ichimoku_b(informative4H['high'], informative4H['low'], window2=26, window3=52).shift(26)
+        #informative4H['ICH_SSA_4H'] = taichi.trend.ichimoku_a(informative4H['high'], informative4H['low'], window1=9, window2=26).shift(26)
+        #informative4H['ICH_KS_4H'] = taichi.trend.ichimoku_base_line(informative4H['high'], informative4H['low'])
+        #informative4H['ICH_TS_4H'] = taichi.trend.ichimoku_conversion_line(informative4H['high'], informative4H['low'])
+        #informative4H['ICH_CS_4H'] = informative4H['close']
+        #informative4H['ICH_CS_HIGH_4H'] = informative4H['high'].shift(26)
+        #informative4H['ICH_CS_LOW_4H'] = informative4H['low'].shift(26)
+        #informative4H['ICH_CS_KS_4H'] = informative4H['ICH_KS_4H'].shift(26)
+        #informative4H['ICH_CS_TS_4H'] = informative4H['ICH_TS_4H'].shift(26)
+        #informative4H['ICH_CS_SSA_4H'] = informative4H['ICH_SSA_4H'].shift(26)
+        #informative4H['ICH_CS_SSB_4H'] = informative4H['ICH_SSB_4H'].shift(26)
 
         #Ichimoku calculations for the strategy's timeframe
         dataframe['ICH_SSB'] = taichi.trend.ichimoku_b(dataframe['high'], dataframe['low'], window2=26, window3=52).shift(26)
@@ -326,16 +344,17 @@ class StratIchimoku008(IStrategy):
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
         global informativeBTC1M
-        global informativeBTC15M
-        global informativeBTC30M
-        global informativeBTC1H
-        global informativeBTC4H
-        global informative1M
+        global informativeBTC5M
+        #global informativeBTC15M
+        #global informativeBTC30M
+        #global informativeBTC1H
+        #global informativeBTC4H
+        #global informative1M
         global informative5M
         global informative15M
-        global informative30M
-        global informative1H
-        global informative4H
+        #global informative30M
+        #global informative1H
+        #global informative4H
 
         dataframe.loc[
             (   
@@ -366,7 +385,38 @@ class StratIchimoku008(IStrategy):
                 & (informative5M['ICH_CS_5M'] > informative5M['ICH_CS_TS_5M'])
                 & (informative5M['ICH_CS_5M'] > informative5M['ICH_CS_KS_5M'])
 
+                & (informative15M['close'] > informative15M['open'])
+                & (informative15M['close'] > informative15M['ICH_SSA_15M'])
+                & (informative15M['close'] > informative15M['ICH_SSB_15M'])
+                & (informative15M['close'] > informative15M['ICH_TS_15M'])
+                & (informative15M['close'] > informative15M['ICH_KS_15M'])
+                & (informative15M['ICH_CS_15M'] > informative15M['ICH_CS_HIGH_15M'])
+                & (informative15M['ICH_CS_15M'] > informative15M['ICH_CS_SSA_15M'])
+                & (informative15M['ICH_CS_15M'] > informative15M['ICH_CS_SSB_15M'])
+                & (informative15M['ICH_CS_15M'] > informative15M['ICH_CS_TS_15M'])
+                & (informative15M['ICH_CS_15M'] > informative15M['ICH_CS_KS_15M'])
+
                 & (informativeBTC1M['close'] > informativeBTC1M['open'])
+                & (informativeBTC1M['close'] > informativeBTC1M['BTC_ICH_SSA_1M'])
+                & (informativeBTC1M['close'] > informativeBTC1M['BTC_ICH_SSB_1M'])
+                & (informativeBTC1M['close'] > informativeBTC1M['BTC_ICH_TS_1M'])
+                & (informativeBTC1M['close'] > informativeBTC1M['BTC_ICH_KS_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] > informativeBTC1M['BTC_ICH_CS_KS_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] > informativeBTC1M['BTC_ICH_CS_TS_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] > informativeBTC1M['BTC_ICH_CS_SSA_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] > informativeBTC1M['BTC_ICH_CS_SSB_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] > informativeBTC1M['BTC_ICH_CS_HIGH_1M'])
+
+                & (informativeBTC5M['close'] > informativeBTC5M['open'])
+                & (informativeBTC5M['close'] > informativeBTC5M['BTC_ICH_SSA_5M'])
+                & (informativeBTC5M['close'] > informativeBTC5M['BTC_ICH_SSB_5M'])
+                & (informativeBTC5M['close'] > informativeBTC5M['BTC_ICH_TS_5M'])
+                & (informativeBTC5M['close'] > informativeBTC5M['BTC_ICH_KS_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] > informativeBTC5M['BTC_ICH_CS_KS_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] > informativeBTC5M['BTC_ICH_CS_TS_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] > informativeBTC5M['BTC_ICH_CS_SSA_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] > informativeBTC5M['BTC_ICH_CS_SSB_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] > informativeBTC5M['BTC_ICH_CS_HIGH_5M'])
             ),
             'enter_long'] = 1
 
@@ -399,7 +449,31 @@ class StratIchimoku008(IStrategy):
                 & (informative5M['ICH_CS_5M'] < informative5M['ICH_CS_TS_5M'])
                 & (informative5M['ICH_CS_5M'] < informative5M['ICH_CS_KS_5M'])
 
+                & (informative15M['close'] < informative15M['open'])
+                & (informative15M['close'] < informative15M['ICH_SSA_15M'])
+                & (informative15M['close'] < informative15M['ICH_SSB_15M'])
+                & (informative15M['close'] < informative15M['ICH_TS_15M'])
+                & (informative15M['close'] < informative15M['ICH_KS_15M'])
+                & (informative15M['ICH_CS_15M'] < informative15M['ICH_CS_LOW_15M'])
+                & (informative15M['ICH_CS_15M'] < informative15M['ICH_CS_SSA_15M'])
+                & (informative15M['ICH_CS_15M'] < informative15M['ICH_CS_SSB_15M'])
+                & (informative15M['ICH_CS_15M'] < informative15M['ICH_CS_TS_15M'])
+                & (informative15M['ICH_CS_15M'] < informative15M['ICH_CS_KS_15M'])
+
                 & (informativeBTC1M['close'] < informativeBTC1M['open'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] < informativeBTC1M['BTC_ICH_CS_KS_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] < informativeBTC1M['BTC_ICH_CS_TS_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] < informativeBTC1M['BTC_ICH_CS_SSA_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] < informativeBTC1M['BTC_ICH_CS_SSB_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] < informativeBTC1M['BTC_ICH_CS_LOW_1M'])
+
+                & (informativeBTC5M['close'] < informativeBTC5M['open'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] < informativeBTC5M['BTC_ICH_CS_KS_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] < informativeBTC5M['BTC_ICH_CS_TS_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] < informativeBTC5M['BTC_ICH_CS_SSA_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] < informativeBTC5M['BTC_ICH_CS_SSB_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] < informativeBTC5M['BTC_ICH_CS_LOW_5M'])
+
             ),
             'enter_short'] = 1
 
@@ -408,16 +482,17 @@ class StratIchimoku008(IStrategy):
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
         global informativeBTC1M
-        global informativeBTC15M
-        global informativeBTC30M
-        global informativeBTC1H
-        global informativeBTC4H
-        global informative1M
+        global informativeBTC5M
+        #global informativeBTC15M
+        #global informativeBTC30M
+        #global informativeBTC1H
+        #global informativeBTC4H
+        #global informative1M
         global informative5M
         global informative15M
-        global informative30M
-        global informative1H
-        global informative4H
+        #global informative30M
+        #global informative1H
+        #global informative4H
 
         """
         dataframe.loc[
