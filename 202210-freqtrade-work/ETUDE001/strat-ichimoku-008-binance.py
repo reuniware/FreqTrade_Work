@@ -397,7 +397,26 @@ class StratIchimoku008Binance(IStrategy):
                 & (informative15M['ICH_CS_15M'] > informative15M['ICH_CS_KS_15M'])
 
                 & (informativeBTC1M['close'] > informativeBTC1M['open'])
+                & (informativeBTC1M['close'] > informativeBTC1M['BTC_ICH_SSA_1M'])
+                & (informativeBTC1M['close'] > informativeBTC1M['BTC_ICH_SSB_1M'])
+                & (informativeBTC1M['close'] > informativeBTC1M['BTC_ICH_TS_1M'])
+                & (informativeBTC1M['close'] > informativeBTC1M['BTC_ICH_KS_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] > informativeBTC1M['BTC_ICH_KS_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] > informativeBTC1M['BTC_ICH_TS_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] > informativeBTC1M['BTC_ICH_SSA_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] > informativeBTC1M['BTC_ICH_SSB_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] > informativeBTC1M['BTC_ICH_HIGH_1M'])
+
                 & (informativeBTC5M['close'] > informativeBTC5M['open'])
+                & (informativeBTC5M['close'] > informativeBTC1M['BTC_ICH_CS_SSA_5M'])
+                & (informativeBTC5M['close'] > informativeBTC1M['BTC_ICH_CS_SSB_5M'])
+                & (informativeBTC5M['close'] > informativeBTC1M['BTC_ICH_CS_TS_5M'])
+                & (informativeBTC5M['close'] > informativeBTC1M['BTC_ICH_CS_KS_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] > informativeBTC5M['BTC_ICH_CS_KS_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] > informativeBTC5M['BTC_ICH_CS_TS_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] > informativeBTC5M['BTC_ICH_CS_SSA_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] > informativeBTC5M['BTC_ICH_CS_SSB_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] > informativeBTC5M['BTC_ICH_CS_HIGH_5M'])
             ),
             'enter_long'] = 1
 
@@ -442,7 +461,19 @@ class StratIchimoku008Binance(IStrategy):
                 & (informative15M['ICH_CS_15M'] < informative15M['ICH_CS_KS_15M'])
 
                 & (informativeBTC1M['close'] < informativeBTC1M['open'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] < informativeBTC1M['BTC_ICH_CS_KS_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] < informativeBTC1M['BTC_ICH_CS_TS_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] < informativeBTC1M['BTC_ICH_CS_SSA_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] < informativeBTC1M['BTC_ICH_CS_SSB_1M'])
+                & (informativeBTC1M['BTC_ICH_CS_1M'] < informativeBTC1M['BTC_ICH_CS_LOW_1M'])
+
                 & (informativeBTC5M['close'] < informativeBTC5M['open'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] < informativeBTC5M['BTC_ICH_CS_KS_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] < informativeBTC5M['BTC_ICH_CS_TS_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] < informativeBTC5M['BTC_ICH_CS_SSA_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] < informativeBTC5M['BTC_ICH_CS_SSB_5M'])
+                & (informativeBTC5M['BTC_ICH_CS_5M'] < informativeBTC5M['BTC_ICH_CS_LOW_5M'])
+
             ),
             'enter_short'] = 1
 
