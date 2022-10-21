@@ -99,7 +99,8 @@ class TenkanBollinger03(IStrategy):
 
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-
+      
+        # Begin : Code to call CCXT for getting the current candlestick'data (Don't use that, the bot is too slow with that...)
         exchanges = {}  # a placeholder for your instances
         for id in ccxt.exchanges:
             exchange = getattr(ccxt, id)
@@ -138,6 +139,7 @@ class TenkanBollinger03(IStrategy):
             dataframe['last_low'] = 0
             dataframe['last_close'] = 0
             pass
+        # End : Code to call CCXT for getting the current candlestick'data (Don't use that, the bot is too slow with that...)
 
         #with gateio : open is NoneType (and these are 24h data)
         #if self.dp.runmode.value in ('live', 'dry_run'):
