@@ -44,7 +44,7 @@ class TenkanBollinger03(IStrategy):
     INTERFACE_VERSION = 3
 
     # Can this strategy go short?
-    can_short: bool = False
+    can_short: bool = True
 
     #roi0 = RealParameter(0.01, 0.09, decimals=1, default=0.04, space="buy")
 
