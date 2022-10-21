@@ -7,6 +7,8 @@ import pandas as pd  # noqa
 from pandas import DataFrame
 import os
 from datetime import datetime
+import ccxt
+import sys
 
 from freqtrade.strategy import (BooleanParameter, CategoricalParameter, DecimalParameter,
                                 IStrategy, IntParameter, RealParameter)
@@ -42,7 +44,7 @@ class TenkanBollinger03(IStrategy):
     INTERFACE_VERSION = 3
 
     # Can this strategy go short?
-    can_short: bool = False
+    can_short: bool = True
 
     #roi0 = RealParameter(0.01, 0.09, decimals=1, default=0.04, space="buy")
 
@@ -65,7 +67,7 @@ class TenkanBollinger03(IStrategy):
     # trailing_stop_positive_offset = 0.0  # Disabled / not configured
 
     # Optimal timeframe for the strategy.
-    timeframe = '12h'
+    timeframe = '4h'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = False
@@ -98,6 +100,7 @@ class TenkanBollinger03(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
+        #with gateio : open is NoneType (and these are 24h data)
         if self.dp.runmode.value in ('live', 'dry_run'):
             ticker = self.dp.ticker(metadata['pair'])
             dataframe['last_open'] = ticker['open']
@@ -136,15 +139,15 @@ class TenkanBollinger03(IStrategy):
 
         dataframe.loc[
             (   
-                (dataframe['last_close'] > dataframe['last_open']) &
-                (qtpylib.crossed_above(dataframe['ICH_TS'], dataframe['bb_middleband']))
+                (dataframe['last_close'] > dataframe['open']) 
+                & (qtpylib.crossed_above(dataframe['ICH_TS'], dataframe['bb_middleband']))
             ),
             'enter_long'] = 1
 
         dataframe.loc[
             (   
-                (dataframe['last_close'] < dataframe['last_open']) &
-                (qtpylib.crossed_below(dataframe['ICH_TS'], dataframe['bb_middleband']))
+                (dataframe['last_close'] < dataframe['open'])
+                & (qtpylib.crossed_below(dataframe['ICH_TS'], dataframe['bb_middleband']))
             ),
             'enter_short'] = 1
 
