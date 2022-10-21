@@ -42,7 +42,7 @@ class TenkanBollinger03(IStrategy):
     INTERFACE_VERSION = 3
 
     # Can this strategy go short?
-    can_short: bool = True
+    can_short: bool = False
 
     #roi0 = RealParameter(0.01, 0.09, decimals=1, default=0.04, space="buy")
 
@@ -65,7 +65,7 @@ class TenkanBollinger03(IStrategy):
     # trailing_stop_positive_offset = 0.0  # Disabled / not configured
 
     # Optimal timeframe for the strategy.
-    timeframe = '15m'
+    timeframe = '12h'
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = False
@@ -98,6 +98,14 @@ class TenkanBollinger03(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
+        if self.dp.runmode.value in ('live', 'dry_run'):
+            ticker = self.dp.ticker(metadata['pair'])
+            dataframe['last_open'] = ticker['open']
+            dataframe['last_high'] = ticker['high']
+            dataframe['last_low'] = ticker['low']
+            dataframe['last_close'] = ticker['close']
+            #log_to_results(str(ticker))
+
         #Ichimoku calculations for the strategy's timeframe
         dataframe['ICH_SSB'] = taichi.trend.ichimoku_b(dataframe['high'], dataframe['low'], window2=26, window3=52).shift(26)
         dataframe['ICH_SSA'] = taichi.trend.ichimoku_a(dataframe['high'], dataframe['low'], window1=9, window2=26).shift(26)
@@ -128,14 +136,14 @@ class TenkanBollinger03(IStrategy):
 
         dataframe.loc[
             (   
-                (dataframe['close'] > dataframe['open']) &
+                (dataframe['last_close'] > dataframe['last_open']) &
                 (qtpylib.crossed_above(dataframe['ICH_TS'], dataframe['bb_middleband']))
             ),
             'enter_long'] = 1
 
         dataframe.loc[
             (   
-                (dataframe['close'] < dataframe['open']) &
+                (dataframe['last_close'] < dataframe['last_open']) &
                 (qtpylib.crossed_below(dataframe['ICH_TS'], dataframe['bb_middleband']))
             ),
             'enter_short'] = 1
@@ -144,16 +152,16 @@ class TenkanBollinger03(IStrategy):
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        dataframe.loc[
-            (
-                (qtpylib.crossed_below(dataframe['close'], dataframe['bb_lowerband']))
-            ),
-            'exit_long'] = 1
+        #dataframe.loc[
+        #    (
+        #        (qtpylib.crossed_below(dataframe['close'], dataframe['bb_lowerband']))
+        #    ),
+        #    'exit_long'] = 1
 
-        dataframe.loc[
-            (
-                (qtpylib.crossed_above(dataframe['close'], dataframe['bb_upperband']))
-            ),
-            'exit_short'] = 1
+        #dataframe.loc[
+        #    (
+        #        (qtpylib.crossed_above(dataframe['close'], dataframe['bb_upperband']))
+        #    ),
+        #    'exit_short'] = 1
 
         return dataframe
